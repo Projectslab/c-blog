@@ -17,6 +17,7 @@
                  [compojure "1.1.6"]
                  [com.taoensso/tower "1.7.1"]
                  [lib-noir "0.7.5"]
+                 [noir-auth "0.3.0-SNAPSHOT"]
                  [com.postspectacular/rotor "0.1.0"]
                  [postgresql/postgresql "9.1-901.jdbc4"]]
   :cljsbuild
