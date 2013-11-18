@@ -7,3 +7,6 @@ pom.xml
 *.class
 /.lein-*
 /.env
+/.idea/
+cblog.iml
+cblog.log
