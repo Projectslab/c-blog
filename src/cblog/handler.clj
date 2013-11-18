@@ -1,49 +1,48 @@
-(ns cblog.handler  
-  (:require [compojure.core :refer [defroutes]]            
+(ns cblog.handler
+  (:require [compojure.core :refer [defroutes]]
             [cblog.routes.home :refer [home-routes]]
             [noir.util.middleware :as middleware]
             [compojure.route :as route]
             [taoensso.timbre :as timbre]
-            [com.postspectacular.rotor :as rotor]))
+            [com.postspectacular.rotor :as rotor]
+            [cblog.routes.auth :refer [auth-routes]]
+            [cblog.models.schema :as schema]
+            [cblog.routes.cljsexample :refer [cljs-routes]]))
 
-(defroutes app-routes
+(defroutes
+  app-routes
   (route/resources "/")
   (route/not-found "Not Found"))
 
 (defn init
-  "init will be called once when
-   app is deployed as a servlet on
-   an app server such as Tomcat
+  "init will be called once when\r
+   app is deployed as a servlet on\r
+   an app server such as Tomcat\r
    put any initialization code here"
   []
   (timbre/set-config!
     [:appenders :rotor]
-    {:min-level :info
-     :enabled? true
-     :async? false ; should be always false for rotor
-     :max-message-per-msecs nil
+    {:min-level :info,
+     :enabled? true,
+     :async? false,
+     :max-message-per-msecs nil,
      :fn rotor/append})
-  
   (timbre/set-config!
     [:shared-appender-config :rotor]
-    {:path "cblog.log" :max-size (* 512 1024) :backlog 10})
-  
+    {:path "cblog.log", :max-size (* 512 1024), :backlog 10})
+  (if-not (schema/initialized?) (schema/create-tables))
   (timbre/info "cblog started successfully"))
 
 (defn destroy
-  "destroy will be called when your application
+  "destroy will be called when your application\r
    shuts down, put any clean up code here"
   []
   (timbre/info "cblog is shutting down..."))
 
-(def app (middleware/app-handler
-           ;; add your application routes here
-           [home-routes app-routes]
-           ;; add custom middleware here
-           :middleware []
-           ;; add access rules here
-           :access-rules []
-           ;; serialize/deserialize the following data formats
-           ;; available formats:
-           ;; :json :json-kw :yaml :yaml-kw :edn :yaml-in-html
-           :formats [:json-kw :edn]))
+(def app
+ (middleware/app-handler
+   [cljs-routes auth-routes home-routes app-routes]
+   :middleware   []
+   :access-rules []
+   :formats      [:json-kw :edn]))
+
