@@ -1,6 +1,6 @@
 # cblog
 
-FIXME
+FIXed
 
 ## Prerequisites
 
