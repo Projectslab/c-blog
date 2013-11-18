@@ -11,8 +11,7 @@
                  [com.taoensso/tower "1.7.1"]
                  [markdown-clj "0.9.35"]
                  [com.cemerick/friend "0.2.0"]
-                 [korma "0.3.0-RC6"]
-                 [mysql/mysql-connector-java "5.1.6"]]
+                 [korma "0.3.0-RC6"]]
   :aot :all
   :plugins [[lein-ring "0.8.7"]]
   :ring {:handler cblog.handler/app
