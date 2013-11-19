@@ -13,7 +13,8 @@
   (sql/with-connection db-spec
     (sql/create-table
       :users
-      [:id "varchar(20) PRIMARY KEY"]
+      [:id "serial"]
+      [:login "varchar(30) PRIMARY KEY"]
       [:first_name "varchar(35)"]
       [:last_name "varchar(35)"]
       [:email "varchar(320)"]  ; in accordance with RFC 3696
