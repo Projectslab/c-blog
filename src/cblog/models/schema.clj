@@ -3,9 +3,9 @@
 
 (def db-spec
   {:subprotocol "postgresql"
-   :subname "//localhost/cblog"
-   :user "admin"
-   :password "admin"})
+   :subname "//localhost/blog"
+   :user "bob"
+   :password "gfhjkm"})
 
 (defn initialized? []
   (throw (new Exception "TODO: initialize the database schema!")))
