@@ -1,6 +1,6 @@
 # cblog
 
-Collective blog from roman
+Projects lab project - Collective blog 
 
 ## Prerequisites
 You will need [Leiningen][1] 2.0 or above installed.
