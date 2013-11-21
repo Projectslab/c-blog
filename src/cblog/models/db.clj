@@ -11,10 +11,9 @@
   (insert users
           (values user)))
 
-(defn update-user [id first-name last-name email]
+(defn update-user [id name email]
   (update users
-  (set-fields {:first_name first-name
-               :last_name last-name
+  (set-fields {:name name
                :email email})
   (where {:id id})))
 
