@@ -7,7 +7,7 @@
             [noir.util.crypt :as crypt]
             [cblog.models.db :as db]))
 
-(defn valid? [name email pass pass1]
+(defn valid-registration? [name email pass pass1]
   (vali/rule (vali/has-value? name)
              [:name "Name is required"])
   (vali/rule (vali/has-value? email)
@@ -20,17 +20,25 @@
              [:pass1 "entered passwords do not match"])
   (not (vali/errors? :name :email :pass :pass1)))
 
-(defn register [& [name]]
+(defn valid-authization? [user pass]
+  (and (vali/rule (vali/not-nil? user)
+                  [:email "User with given email not found"])
+       (vali/rule (crypt/compare pass (:pass user))
+                  [:pass "Password is not correct"]))
+  (not (vali/errors? :email :pass)))
+
+(defn register [& [name email]]
   (layout/render
     "registration.html"
     {:name name
+     :email email
      :name-error (vali/on-error :name first)
      :email-error (vali/on-error :email first)
      :pass-error (vali/on-error :pass first)
      :pass1-error (vali/on-error :pass1 first)}))
 
 (defn handle-registration [name email pass pass1]
-  (if (valid? name email pass pass1)
+  (if (valid-registration? name email pass pass1)
     (try
       (do
         (db/create-user {:name name :email email :pass (crypt/encrypt pass)})
@@ -53,9 +61,15 @@
 
 (defn handle-login [email pass]
   (let [user (db/find-user-by-email email)]
-    (if (and user (crypt/compare pass (:pass user)))
-      (session/put! :user-id (:id user)))
-    (resp/redirect "/")))
+    (if (valid-authization? user pass)
+      (do
+        (session/put! :user-id (:id user))
+        (resp/redirect "/"))
+      (layout/render
+        "login.html"
+        {:email email
+         :email-error (vali/on-error :email first)
+         :pass-error  (vali/on-error :pass first)}))))
 
 (defn logout []
   (session/clear!)
