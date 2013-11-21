@@ -3,13 +3,20 @@
 {% endblock %}
 {% block content %}
 		<form action="{{servlet-context}}/register" method="POST">
-			<label for="id">user id</label>
-			{% if id-error %}
-			<div class="error">{{id-error}}</div>
+			<label for="name">name</label>
+			{% if name-error %}
+			<div class="error">{{name-error}}</div>
 			{% endif %}
 			<p>
-				<input id="id" name="id" tabindex="1" type="text" value={{id}}></input>
+				<input id="name" name="name" tabindex="1" type="text" value={{name}}></input>
 			</p>
+            <label for="email">Email</label>
+            {% if email-error %}
+            <div class="error">{{email-error}}</div>
+            {% endif %}
+            <p>
+                <input id="email" name="email" tabindex="1" type="text" value={{email}}></input>
+            </p>
 			<label for="pass">password</label>
 			{% if pass-error %}
 			<div class="error">{{pass-error}}</div>
@@ -27,4 +34,3 @@
 			<input class="btn" tabindex="4" type="submit" value="create account">
 		</form>
 {% endblock %}
-

@@ -4,7 +4,7 @@
 		<ul class="nav navbar-nav">
 			 <li class="dropdown">
 				 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-				 	<i class="icon-user"></i>{{user-id}} <b class="caret"></b>
+				 	<i class="icon-user"></i>{{user.name}} <b class="caret"></b>
 				 </a>
 				 <ul class="dropdown-menu">
 				 	<li><a href="{{servlet-context}}/profile">Profile</a></li>
@@ -20,9 +20,9 @@
 			 <li class="dropdown">
 				<form action="{{servlet-context}}/login" class="navbar-form" method="POST">
 					<input class="span2"
-					       id="id"
-					       name="id"
-					       placeholder="user id"
+					       id="email"
+					       name="email"
+					       placeholder="Your email"
 						   style="margin-right: 5px"
 						   type="text"/>
 					 <input class="span2"
