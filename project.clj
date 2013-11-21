@@ -24,18 +24,24 @@
    [lib-noir "0.7.5"]
    [com.postspectacular/rotor "0.1.0"]
    [postgresql/postgresql "9.1-901.jdbc4"]]
+
   :cljsbuild
+
   {:builds
    [{:source-paths ["src-cljs"],
      :compiler
      {:pretty-print false,
       :output-to "resources/public/js/site.js",
       :optimizations :advanced}}]}
+
   :ring
+
   {:handler cblog.handler/app,
    :init cblog.handler/init,
    :destroy cblog.handler/destroy}
+
   :profiles
+
   {:production
    {:ring
     {:open-browser? false, :stacktraces? false, :auto-reload? false}},
@@ -50,3 +56,4 @@
   :description
   "FIXME: write description"
   :min-lein-version "2.0.0")
+
