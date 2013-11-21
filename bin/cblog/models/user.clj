@@ -1,10 +1,12 @@
-(ns cblog.models.db
+(ns cblog.models.user
   (:use korma.core
         [korma.db :only (defdb)])
-  (:require [cblog.models.schema :as schema]))
+  (:require [cblog.config.db :as config]))
 
-(defdb db schema/db-spec)
+;;Get db connection
+(defdb db config/db-spec)
 
+;;Define user model, entity
 (defentity users)
 
 (defn create-user [user]

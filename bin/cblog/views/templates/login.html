@@ -1,0 +1,21 @@
+{% extends "cblog/views/templates/base.html" %}
+{% block menu %}
+{% endblock %}
+{% block content %}
+
+<form action="{{servlet-context}}/login" class="navbar-form" method="POST">
+    <input class="span2"
+           id="id"
+           name="id"
+           placeholder="user id"
+           style="margin-right: 5px"
+           type="text"/>
+    <input class="span2"
+           id="pass"
+           name="pass"
+           placeholder="password"
+           style="margin-right: 5px"
+           type="password"/>
+    <input class="btn" type="submit" value="Login"/>
+</form>
+{% endblock %}

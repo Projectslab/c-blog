@@ -17,7 +17,7 @@
 
   (POST "/update-profile" {params :params} (profile/update-profile params))
 
-  (GET "/login" [] (login/new-login))
+  (GET "login" [] (login/new-login))
 
   (POST "/login" [id pass]
         (login/handle-login id pass))
