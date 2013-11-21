@@ -14,8 +14,10 @@
 (defn new-login []
   (layout/render
     "login.html"))
+(new-login)
 
 
 (defn logout []
   (session/clear!)
   (resp/redirect "/"))
+

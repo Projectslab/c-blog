@@ -24,3 +24,4 @@
   (first (select users
                  (where {:id id})
                  (limit 1))))
+

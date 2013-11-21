@@ -6,7 +6,8 @@
             [taoensso.timbre :as timbre]
             [com.postspectacular.rotor :as rotor]
             [cblog.routes.auth :refer [auth-routes]]
-            [cblog.routes.cljsexample :refer [cljs-routes]]))
+            [cblog.routes.cljsexample :refer [cljs-routes]]
+            [cblog.config.db :as db]))
 
 (defroutes
   app-routes
@@ -29,7 +30,7 @@
   (timbre/set-config!
     [:shared-appender-config :rotor]
     {:path "cblog.log", :max-size (* 512 1024), :backlog 10})
-  ;(schema/create-tables)
+  (db/create-tables)
   (timbre/info "cblog started successfully")
 
   )
@@ -51,3 +52,4 @@
    [:json-kw :edn]))
 
 
+
