@@ -17,6 +17,7 @@
              [:pass1 "entered passwords do not match"])
   (not (vali/errors? :id :pass :pass1)))
 
+
 (defn register [& [id]]
   (layout/render
     "registration.html"
@@ -36,3 +37,4 @@
         (vali/rule false [:id (.getMessage ex)])
         (register)))
     (register id)))
+

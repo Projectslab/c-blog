@@ -30,7 +30,7 @@
   (timbre/set-config!
     [:shared-appender-config :rotor]
     {:path "cblog.log", :max-size (* 512 1024), :backlog 10})
-  (db/create-tables)
+  ;(db/create-tables)
   (timbre/info "cblog started successfully")
 
   )
