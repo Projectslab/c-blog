@@ -7,6 +7,7 @@
 
 (def template-path "cblog/views/templates/")
 
+
 (deftype
   RenderableTemplate
   [template params]

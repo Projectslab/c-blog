@@ -15,6 +15,7 @@
   (layout/render
     "login.html"))
 
+
 (defn logout []
   (session/clear!)
   (resp/redirect "/"))
