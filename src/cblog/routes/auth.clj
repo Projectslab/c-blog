@@ -10,17 +10,22 @@
 (defn valid? [name email pass pass1]
   (vali/rule (vali/has-value? name)
              [:name "Name is required"])
+  (vali/rule (vali/has-value? email)
+             [:email "Email is required"])
+  (vali/rule (vali/is-email? email)
+             [:email "Incorrect email format"])
   (vali/rule (vali/min-length? pass 5)
              [:pass "password must be at least 5 characters"])
   (vali/rule (= pass pass1)
              [:pass1 "entered passwords do not match"])
-  (not (vali/errors? :name :pass :pass1)))
+  (not (vali/errors? :name :email :pass :pass1)))
 
 (defn register [& [name]]
   (layout/render
     "registration.html"
     {:name name
      :name-error (vali/on-error :name first)
+     :email-error (vali/on-error :email first)
      :pass-error (vali/on-error :pass first)
      :pass1-error (vali/on-error :pass1 first)}))
 
@@ -35,7 +40,7 @@
       (catch Exception ex
         (vali/rule false [:name (.getMessage ex)])
         (register)))
-    (register name)))
+    (register name email)))
 
 (defn profile []
   (layout/render
