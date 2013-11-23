@@ -8,22 +8,19 @@
              [noir.validation :as vali]
              ))
 
-(defn valid? [id pass]
-  ;; Check if email field is empty
-  (vali/rule (vali/has-value? id)
-             [:id "email must not be empty"])
-  ;; Check if pass field is empty
-  (vali/rule (vali/has-value? pass)
-             [:pass "password must not be empty"])
 
+(defn valid-authization? [user pass]
+  (and (vali/rule (vali/not-nil? user)
+                  [:email "User with given email not found"])
+       (vali/rule (crypt/compare pass (:pass user))
+                  [:pass "Password is not correct"]))
   (not (vali/errors? :email :pass)))
 
 
 ;; POST "/login"
 (defn handle-login [id pass]
-  (debugger)
   ;; Validate id(email) and pass
-  (if (valid? id pass)
+  (if (valid-authization? id pass)
     ;; If email and pass not empty check if user exists
      (let [user (db-user/get-user id)]
       ;; Check if pass correct
@@ -43,7 +40,7 @@
   (layout/render
     "login.html"
      {
-       :email-error (vali/on-error :id first)
+       :email-error (vali/on-error :email first)
        :pass-error (vali/on-error :pass first)
        }))
 
@@ -51,6 +48,8 @@
 (defn logout []
   (session/clear!)
   (resp/redirect "/"))
+
+
 
 
 
