@@ -2,21 +2,31 @@
 {% block menu %}
 {% endblock %}
 {% block content %}
-<form action="{{servlet-context}}/login" method="POST">
-    <label for="email">Email</label>
+
+<form action="{{servlet-context}}/login" class="col-md-4" method="POST">
+    <div class="form-group">
+        <input class="span2 form-control"
+               id="id"
+               name="id"
+               placeholder="user id"
+               style="margin-right: 5px"
+               type="text"/>
+    </div>
     {% if email-error %}
-    <div class="error">{{email-error}}</div>
-    {% endif %}
-    <p>
-        <input id="email" name="email" tabindex="1" type="text" value={{email}}></input>
-    </p>
-    <label for="pass">password</label>
+	  <div class="error">{{email-error}}</div>
+	{% endif %}
+    <div class="form-group">
+        <input class="span2 form-control"
+               id="pass"
+               name="pass"
+               placeholder="password"
+               style="margin-right: 5px"
+               type="password"/>
+    </div>
     {% if pass-error %}
-    <div class="error">{{pass-error}}</div>
-    {% endif %}
-    <p>
-        <input id="pass" name="pass" tabindex="2" type="password"></input>
-    </p>
-    <input class="btn" tabindex="4" type="submit" value="Login">
+	  <div class="error">{{pass-error}}</div>
+	{% endif %}
+    <input class="btn btn-default" type="submit" value="Login"/>
 </form>
 {% endblock %}
+

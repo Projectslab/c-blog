@@ -10,14 +10,14 @@
   (GET "/register" []
        (reg/register))
 
-  (POST "/register" [myname email pass pass1]
-        (reg/handle-registration myname email pass pass1))
+  (POST "/register" [id pass pass1]
+        (reg/handle-registration id pass pass1))
 
   (GET "/profile" [] (profile/profile))
 
   (POST "/update-profile" {params :params} (profile/update-profile params))
 
-  (GET "/login" [] (login/new-login))
+  (GET "login" [] (login/new-login))
 
   (POST "/login" [id pass]
         (login/handle-login id pass))

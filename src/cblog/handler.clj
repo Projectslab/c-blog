@@ -6,7 +6,8 @@
             [taoensso.timbre :as timbre]
             [com.postspectacular.rotor :as rotor]
             [cblog.routes.auth :refer [auth-routes]]
-            [cblog.routes.cljsexample :refer [cljs-routes]]))
+            [cblog.routes.cljsexample :refer [cljs-routes]]
+            [cblog.config.db :as db]))
 
 (defroutes
   app-routes
@@ -14,9 +15,9 @@
   (route/not-found "Not Found"))
 
 (defn init
-  "init will be called once when\r
-   app is deployed as a servlet on\r
-   an app server such as Tomcat\r
+  "init will be called once when
+   app is deployed as a servlet on
+   an app server such as Tomcat
    put any initialization code here"
   []
   (timbre/set-config!
@@ -29,11 +30,13 @@
   (timbre/set-config!
     [:shared-appender-config :rotor]
     {:path "cblog.log", :max-size (* 512 1024), :backlog 10})
-;  (if-not (migrations/actualized?) (migrations/actualize))
-  (timbre/info "cblog started successfully"))
+  ;(db/create-tables)
+  (timbre/info "cblog started successfully")
+
+  )
 
 (defn destroy
-  "destroy will be called when your application\r
+  "destroy will be called when your application
    shuts down, put any clean up code here"
   []
   (timbre/info "cblog is shutting down..."))
@@ -41,7 +44,14 @@
 (def app
  (middleware/app-handler
    [cljs-routes auth-routes home-routes app-routes]
-   :middleware   []
-   :access-rules []
-   :formats      [:json-kw :edn]))
+   :middleware
+   []
+   :access-rules
+   []
+   :formats
+   [:json-kw :edn]))
 
+
+
+
+

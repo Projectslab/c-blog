@@ -2,10 +2,11 @@
   (:require [selmer.parser :as parser]
             [clojure.string :as s]
             [ring.util.response :refer [content-type response]]
-            [noir.session :as session])
-  (:import compojure.response.Renderable))
+            [noir.session :as session]
+            [compojure.response :refer [Renderable]]))
 
 (def template-path "cblog/views/templates/")
+
 
 (deftype
   RenderableTemplate
@@ -30,3 +31,6 @@
 (defn render [template & [params]]
   (RenderableTemplate. template params))
 
+
+
+
