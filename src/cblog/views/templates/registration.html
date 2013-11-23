@@ -3,13 +3,15 @@
 {% endblock %}
 {% block content %}
 		<form action="{{servlet-context}}/register" method="POST">
-		  <!-- Name -->
+		  <!-- Any errors here -->
+            {{any-error}}
+          <!-- Name -->
             <label for="id">Name</label>
 			{% if name-error %}
 			  <div class="error">{{name-error}}</div>
 			{% endif %}
 			<p>
-				<input id="name" name="name" tabindex="1" type="text" value={{myname}} ></input>
+				<input id="myname" name="myname" tabindex="1" type="text" value={{myname}} ></input>
 			</p>
           <!-- Email -->
             <label for="id">Email</label>
@@ -30,7 +32,7 @@
           <!-- Password 2 -->
 			<label for="pass1">retype password</label>
 			{% if pass1-error %}
-			<div class="error">{{pass1-error}}</div>
+			  <div class="error">{{pass1-error}}</div>
 			{% endif %}
 			<p>
 				<input id="pass1" name="pass1" tabindex="3" type="password"></input>
