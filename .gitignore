@@ -8,6 +8,14 @@ pom.xml.asc
 *.class
 /.lein-*
 /.env
+cblog.log
+.nrepl-port
+Procfile
+
+## IDEA ##
 /.idea/
 cblog.iml
-cblog.log
+
+## Eclipse ##
+.classpath
+.project
