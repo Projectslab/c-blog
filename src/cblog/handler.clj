@@ -7,7 +7,7 @@
             [com.postspectacular.rotor :as rotor]
             [cblog.routes.auth :refer [auth-routes]]
             [cblog.routes.cljsexample :refer [cljs-routes]]
-            [cblog.config.db :as db]))
+            [cblog.config.schema :as schema]))
 
 (defroutes
   app-routes
@@ -30,7 +30,7 @@
   (timbre/set-config!
     [:shared-appender-config :rotor]
     {:path "cblog.log", :max-size (* 512 1024), :backlog 10})
-  ;(db/create-tables)
+  (schema/create-tables)
   (timbre/info "cblog started successfully")
 
   )
@@ -50,6 +50,8 @@
    []
    :formats
    [:json-kw :edn]))
+
+
 
 
 
