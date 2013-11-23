@@ -19,7 +19,8 @@
                  [lib-noir "0.7.5"]
                  [noir-auth "0.3.0-SNAPSHOT"]
                  [com.postspectacular/rotor "0.1.0"]
-                 [postgresql/postgresql "9.1-901.jdbc4"]]
+                 [postgresql/postgresql "9.1-901.jdbc4"]
+                 [drift "1.5.2"]]
   :cljsbuild
   {:builds [{:source-paths ["src-cljs"]
              :compiler {:pretty-print false
@@ -38,7 +39,8 @@
   :aot
   :all
   :plugins [[lein-ring "0.8.7"]
-            [lein-cljsbuild "0.3.3"]]
+            [lein-cljsbuild "0.3.3"]
+            [drift "1.5.2"]]
   :description "Simple collective blog with authorisation"
   :min-lein-version "2.0.0"
   :repl-options {:init-ns cblog.repl})
