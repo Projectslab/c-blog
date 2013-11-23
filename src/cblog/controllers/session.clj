@@ -1,4 +1,4 @@
-(ns cblog.controllers.login
+(ns cblog.controllers.session
    (:require [cblog.models.user :as db-user]
              [noir.response :as resp]
              [noir.session :as session]
@@ -7,7 +7,7 @@
              [noir.validation :as vali]
              ))
 
-;; GET "/login"
+;; GET "/session/new"
 (defn new []
   (layout/render
     "login.html"
@@ -17,7 +17,7 @@
        }))
 
 
-;; POST "/login"
+;; POST "/session"
 (defn create [email pass]
   ;; Find user in db
   (let [user (db/find-user-by-email email)]
@@ -36,10 +36,12 @@
 
 
 
-;; DELETE session
+;; DELETE "/session"
 (defn destroy []
   (session/clear!)
   (resp/redirect "/"))
+
+
 
 
 

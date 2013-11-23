@@ -1,12 +1,10 @@
 (ns cblog.handler
   (:require [compojure.core :refer [defroutes]]
-            [cblog.routes.home :refer [home-routes]]
             [noir.util.middleware :as middleware]
             [compojure.route :as route]
             [taoensso.timbre :as timbre]
             [com.postspectacular.rotor :as rotor]
-            [cblog.routes.auth :refer [auth-routes]]
-            [cblog.routes.cljsexample :refer [cljs-routes]]
+            [cblog.config.routes :refer [cljs-routes home-routes user-routes session-routes]]
             [cblog.config.schema :as schema]))
 
 (defroutes
@@ -30,7 +28,7 @@
   (timbre/set-config!
     [:shared-appender-config :rotor]
     {:path "cblog.log", :max-size (* 512 1024), :backlog 10})
-  (schema/create-tables)
+  ;(schema/create-tables)
   (timbre/info "cblog started successfully")
 
   )
@@ -43,13 +41,15 @@
 
 (def app
  (middleware/app-handler
-   [cljs-routes auth-routes home-routes app-routes]
+   [cljs-routes user-routes session-routes home-routes app-routes]
    :middleware
    []
    :access-rules
    []
    :formats
    [:json-kw :edn]))
+
+
 
 
 
