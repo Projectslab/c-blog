@@ -18,4 +18,4 @@
 ;(defn create-tables
 ;  "creates the database tables used by the application"
 ;  []
-;  (create-users-table))
+;  (create-users-table))

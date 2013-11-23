@@ -12,10 +12,10 @@
 (defn show []
   (layout/render
     "profile.html"
-    {:user (db-user/get-user (session/get :user-id))}))
+    {:user (db-user/find-user (session/get :user-id))}))
 
 ;; GET /users/new
-(defn new [& [myname email]]
+(defn new-user [& [myname email]]
   (layout/render
     "registration.html"
     {
@@ -27,10 +27,9 @@
      :pass-error (vali/on-error :pass first)
      :pass1-error (vali/on-error :pass1 first)}))
 
-
 ;; POST /users/
 (defn create [myname email pass pass1]
-  (if (valid-registration? myname email pass pass1)
+  (if (db-user/validate-registration? myname email pass pass1)
     (try
       (do
         (db-user/create-user {:name myname :email email :pass (crypt/encrypt pass)})
@@ -38,12 +37,10 @@
         (resp/redirect "/"))
       (catch Exception ex
         (vali/rule false [:any-error (.getMessage ex)])
-        (register)))
-    (register myname email)))
-
+        (new-user)))
+    (new-user myname email)))
 
 ;; PUT /users/:id
-
 (defn update [{:keys [first-name last-name email]}]
   (db-user/update-user (session/get :user-id) first-name last-name email)
-  (profile))
+  (show))

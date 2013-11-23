@@ -2,6 +2,7 @@
   (:use korma.core
         [korma.db :only (defdb)])
   (:require [cblog.config.db :as config]
+            [noir.util.crypt :as crypt]
             [noir.validation :as vali]))
 
 ;;Get db connection
@@ -26,7 +27,6 @@
                  (where {:id id})
                  (limit 1))))
 
-
 (defn find-user-by-email [email]
   (first (select users
                  (where {:email email})
@@ -41,7 +41,6 @@
                   [:pass "Password is not correct"]))
   (not (vali/errors? :email :pass)))
 
-
 (defn validate-registration? [myname email pass pass1]
   (vali/rule (vali/has-value? myname)
              [:myname "Name is required"])
@@ -53,4 +52,4 @@
              [:pass "password must be at least 5 characters"])
   (vali/rule (= pass pass1)
              [:pass1 "entered passwords do not match"])
-  (not (vali/errors? :myname :email :pass :pass1)))
+  (not (vali/errors? :myname :email :pass :pass1)))

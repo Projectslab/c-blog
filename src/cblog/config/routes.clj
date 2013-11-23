@@ -12,14 +12,15 @@
 
   ;; Show user registration form
   (GET "/users/new" []
-       (users-ctrl/new))
+       (users-ctrl/new-user))
 
   ;; Create user
   (POST "/users" [myname email pass pass1]
-        (users-ctrl/handle-registration myname email pass pass1))
+        (users-ctrl/create myname email pass pass1))
 
   ;; Show user
-  (GET "/users/:id" [:id] (users-ctrl/show))
+  ;;TODO: 'show' should have a param ':id'
+  (GET "/users/:id" [id] (users-ctrl/show))
 
   ;; Update user
   (PUT "/users/:id" {params :params} (users-ctrl/update params)))
@@ -39,7 +40,6 @@
   (DELETE "/session/" []
         (session/destroy)))
 
-
 (def messages
   (atom
     [{:message "Hello world"
@@ -58,9 +58,5 @@
   (layout/render
     "home.html" {:content (md/md->html "/md/docs.md")}))
 
-
 (defroutes home-routes
-  (GET "/" [] (home-page))
-
-
-
+           (GET "/" [] (home-page)))

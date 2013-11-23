@@ -16,13 +16,12 @@
        :pass-error (vali/on-error :pass first)
        }))
 
-
 ;; POST "/session"
 (defn create [email pass]
   ;; Find user in db
-  (let [user (db/find-user-by-email email)]
+  (let [user (db-user/find-user-by-email email)]
     ;; Validate user and pass
-    (if (valid-authization? user pass)
+    (if (db-user/validate-login? user pass)
       ;; If validation passed then put user id in session
       (do
         (session/put! :user-id (:id user))
@@ -34,24 +33,7 @@
          :email-error (vali/on-error :email first)
          :pass-error  (vali/on-error :pass first)}))))
 
-
-
 ;; DELETE "/session"
 (defn destroy []
   (session/clear!)
   (resp/redirect "/"))
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
