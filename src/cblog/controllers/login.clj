@@ -1,4 +1,5 @@
 (ns cblog.controllers.login
+   (:use [schmetterling.core :only (debugger)])
    (:require [cblog.models.user :as db-user]
              [noir.response :as resp]
              [noir.session :as session]
@@ -20,6 +21,7 @@
 
 ;; POST "/login"
 (defn handle-login [id pass]
+  (debugger)
   ;; Validate id(email) and pass
   (if (valid? id pass)
     ;; If email and pass not empty check if user exists
@@ -49,6 +51,10 @@
 (defn logout []
   (session/clear!)
   (resp/redirect "/"))
+
+
+
+
 
 
 

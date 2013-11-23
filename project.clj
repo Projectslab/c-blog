@@ -23,7 +23,8 @@
    [com.taoensso/tower "1.7.1"]
    [lib-noir "0.7.5"]
    [com.postspectacular/rotor "0.1.0"]
-   [postgresql/postgresql "9.1-901.jdbc4"]]
+   [postgresql/postgresql "9.1-901.jdbc4"]
+   ]
 
   :cljsbuild
 
@@ -56,4 +57,8 @@
   :description
   "FIXME: write description"
   :min-lein-version "2.0.0")
+
+
+
+
 
