@@ -1,31 +1,44 @@
 (ns cblog.config.routes
   (:use compojure.core)
   (:require
-    [cblog.controllers.login :as login]
-    [cblog.controllers.registration :as reg]
-    [cblog.controllers.profile :as profile]
+    [cblog.controllers.session :as session]
+    [cblog.controllers.users :as users-ctrl]
     [noir.response :as response]
     [cblog.views.layout :as layout]
-    [cblog.util :as util]))
+    [cblog.utils.md :as md]))
 
-(defroutes auth-routes
-  (GET "/register" []
-       (reg/register))
+;; User routes
+(defroutes user-routes
 
-  (POST "/register" [myname email pass pass1]
-        (reg/handle-registration myname email pass pass1))
+  ;; Show user registration form
+  (GET "/users/new" []
+       (users-ctrl/new))
 
-  (GET "/profile" [] (profile/profile))
+  ;; Create user
+  (POST "/users" [myname email pass pass1]
+        (users-ctrl/handle-registration myname email pass pass1))
 
-  (POST "/update-profile" {params :params} (profile/update-profile params))
+  ;; Show user
+  (GET "/users/:id" [:id] (users-ctrl/show))
 
-  (GET "/login" [] (login/new-login))
+  ;; Update user
+  (PUT "/users/:id" {params :params} (users-ctrl/update params)))
 
-  (POST "/login" [id pass]
-        (login/handle-login id pass))
+;; Session routes
 
-  (GET "/logout" []
-        (login/logout)))
+(defroutes session-routes
+
+  ;; New user session form ( login form )
+  (GET "/session/new" [] (session/new))
+
+  ;; New session
+  (POST "/session" [id pass]
+        (session/create id pass))
+
+  ;; Destroy session ( logout )
+  (DELETE "/session/" []
+        (session/destroy)))
+
 
 (def messages
   (atom
@@ -43,12 +56,11 @@
 
 (defn home-page []
   (layout/render
-    "home.html" {:content (util/md->html "/md/docs.md")}))
+    "home.html" {:content (md/md->html "/md/docs.md")}))
 
-(defn about-page []
-  (layout/render "about.html"))
 
 (defroutes home-routes
   (GET "/" [] (home-page))
-  (GET "/about" [] (about-page)))
+
+
 

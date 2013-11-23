@@ -1,4 +1,4 @@
-(ns  cblog.controllers.profile
+(ns  cblog.controllers.users
   (:require
     [noir.session :as session]
     [cblog.views.layout :as layout]
