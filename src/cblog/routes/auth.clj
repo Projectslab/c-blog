@@ -10,8 +10,8 @@
   (GET "/register" []
        (reg/register))
 
-  (POST "/register" [id pass pass1]
-        (reg/handle-registration id pass pass1))
+  (POST "/register" [myname email pass pass1]
+        (reg/handle-registration myname email pass pass1))
 
   (GET "/profile" [] (profile/profile))
 

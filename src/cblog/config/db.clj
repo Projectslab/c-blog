@@ -12,8 +12,7 @@
 ;    (sql/create-table
 ;      :users
 ;      [:id "varchar(20) PRIMARY KEY"]
-;      [:first_name "varchar(30)"]
-;      [:last_name "varchar(30)"]
+;      [:name "varchar(30)"]
 ;      [:email "varchar(30)"]
 ;      [:admin :boolean]
 ;      [:last_login :time]
@@ -23,4 +22,6 @@
 ;(defn create-tables
 ;  "creates the database tables used by the application"
 ;  []
-;  (create-users-table))
+;  (create-users-table))
+
+
