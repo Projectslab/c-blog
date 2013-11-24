@@ -13,7 +13,7 @@
 (defn show [id]
   (layout/render
     "users/show.html"
-    {:user (user-model/find-user id)}))
+    {:user-info (user-model/find-user id)}))
 
 ;; GET /users/new
 (defn unew [& [myname email]]
