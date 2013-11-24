@@ -32,15 +32,15 @@
   ;(schema/create-tables)
   (timbre/info "cblog started successfully"))
 
-;(defn dev-log [handler]
-;  (fn [request]
-;    (let [response (handler request)]
-;      (timbre/info
-;        "request:\n"
-;        (with-out-str (clojure.pprint/pprint request))
-;        "\nresponse:\n"
-;        (with-out-str (clojure.pprint/pprint response))
-;      response))))
+(defn dev-log [handler]
+  (fn [request]
+    (let [response (handler request)]
+      (timbre/info
+        "request:\n"
+        (with-out-str (clojure.pprint/pprint request))
+        "\nresponse:\n"
+        (with-out-str (clojure.pprint/pprint response))
+      response))))
 
 (defn destroy
   "destroy will be called when your application

@@ -25,7 +25,7 @@
 (defn find-user [id]
   (first (select users
                  (where {:id id})
-                 (limit 1))))
+                 )))
 
 (defn find-user-by-email [email]
   (first (select users
