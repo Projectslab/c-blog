@@ -2,7 +2,8 @@
   (:use korma.core
         [korma.db :only (defdb)])
   (:require [cblog.config.db :as config]
-            [noir.validation :as vali]))
+            [noir.validation :as vali]
+            [noir.util.crypt :as crypt]))
 
 ;;Get db connection
 (defdb db config/db-spec)
@@ -53,4 +54,6 @@
              [:pass "password must be at least 5 characters"])
   (vali/rule (= pass pass1)
              [:pass1 "entered passwords do not match"])
-  (not (vali/errors? :myname :email :pass :pass1)))
+  (not (vali/errors? :myname :email :pass :pass1)))
+
+

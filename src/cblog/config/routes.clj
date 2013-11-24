@@ -12,17 +12,17 @@
 
   ;; Show user registration form
   (GET "/users/new" []
-       (users-ctrl/new))
+       (users-ctrl/unew))
 
   ;; Create user
   (POST "/users" [myname email pass pass1]
-        (users-ctrl/handle-registration myname email pass pass1))
+        (users-ctrl/create myname email pass pass1))
 
   ;; Show user
-  (GET "/users/:id" [:id] (users-ctrl/show))
+  (GET "/users/:id" [id] (users-ctrl/show id))
 
   ;; Update user
-  (PUT "/users/:id" {params :params} (users-ctrl/update params)))
+  (PUT "/users/:id" [id params] (users-ctrl/update id params)))
 
 ;; Session routes
 
@@ -60,7 +60,4 @@
 
 
 (defroutes home-routes
-  (GET "/" [] (home-page))
-
-
-
+  (GET "/" [] (home-page)))

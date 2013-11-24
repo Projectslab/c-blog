@@ -1,4 +1,4 @@
-(ns cblog.util
+(ns cblog.utils.md
   (:require [noir.io :as io]
             [markdown.core :as md]))
 
@@ -8,3 +8,4 @@
   (->>
     (io/slurp-resource filename)
     (md/md-to-html-string)))
+

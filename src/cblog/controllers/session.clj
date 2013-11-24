@@ -1,10 +1,11 @@
 (ns cblog.controllers.session
-   (:require [cblog.models.user :as db-user]
+   (:require [cblog.models.user :as user-model]
              [noir.response :as resp]
              [noir.session :as session]
              [noir.util.crypt :as crypt]
              [cblog.views.layout :as layout]
              [noir.validation :as vali]
+             [cblog.models.user :refer [validate-login?]]
              ))
 
 ;; GET "/session/new"
@@ -20,9 +21,9 @@
 ;; POST "/session"
 (defn create [email pass]
   ;; Find user in db
-  (let [user (db/find-user-by-email email)]
+  (let [user (user-model/find-user-by-email email)]
     ;; Validate user and pass
-    (if (valid-authization? user pass)
+    (if (validate-login? user pass)
       ;; If validation passed then put user id in session
       (do
         (session/put! :user-id (:id user))
@@ -40,6 +41,8 @@
 (defn destroy []
   (session/clear!)
   (resp/redirect "/"))
+
+
 
 
 
