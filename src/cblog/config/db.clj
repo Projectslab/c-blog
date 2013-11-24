@@ -6,7 +6,3 @@
    :subname "//localhost/blog"
    :user "postgres"
    :password "gfhjkm"})
-
-
-
-
