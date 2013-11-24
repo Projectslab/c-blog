@@ -5,8 +5,12 @@
 
 
 (defn current-user []
+  ;; Get user id from session
   (let [user-id (session/get :user-id)]
+    ;; If user id is there
     (if user-id
+      ;; Returns user map {:id :name ...}
       (find-user user-id)
+      ;; If no user id return nil
       nil
       )))

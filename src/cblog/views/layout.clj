@@ -3,10 +3,10 @@
             [clojure.string :as s]
             [ring.util.response :refer [content-type response]]
             [noir.session :as session]
-            [compojure.response :refer [Renderable]]))
+            [compojure.response :refer [Renderable]]
+            [cblog.controllers.application :as app]))
 
 (def template-path "cblog/views/templates/")
-
 
 (deftype
   RenderableTemplate
@@ -22,11 +22,13 @@
           "active"
           :servlet-context
           (:context request)
-          :user-id
-          (session/get :user-id))
+          :user
+          (app/current-user))
         (parser/render-file (str template-path template))
         response)
       "text/html; charset=utf-8")))
 
 (defn render [template & [params]]
-  (RenderableTemplate. template params))
+  (RenderableTemplate. template params))
+
+

@@ -1,13 +1,14 @@
 <div class="navbar-collapse collapse">
-{% if user-id %}
+
+{% if user %}
 	<div class="btn-group pull-right">
 		<ul class="nav navbar-nav">
 			 <li class="dropdown">
 				 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-				 	<i class="icon-user"></i>{{user-id}} <b class="caret"></b>
+				 	<i class="icon-user"></i>{{user.name}} <b class="caret"></b>
 				 </a>
 				 <ul class="dropdown-menu">
-                     <li><a href="{{servlet-context}}/users/{{user-id}}">Profile</a></li>
+                     <li><a href="{{servlet-context}}/users/{{user.id}}">Profile</a></li>
 					<li class="divider"></li>
                      <li><a href="{{servlet-context}}/session/">Sign Out</a></li>
 				 </ul>

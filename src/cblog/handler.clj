@@ -52,9 +52,11 @@
  (middleware/app-handler
    [cljs-routes user-routes session-routes home-routes app-routes]
    :middleware
-   [];dev-log
+   []
    :access-rules
    []
    :formats
    [:json-kw :edn]))
+
+
 
