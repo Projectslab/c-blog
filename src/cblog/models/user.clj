@@ -32,6 +32,8 @@
                  (where {:email email})
                  (limit 1))))
 
+
+
 ;; Validation ;;
 
 (defn validate-login? [user pass]
@@ -53,5 +55,7 @@
   (vali/rule (= pass pass1)
              [:pass1 "entered passwords do not match"])
   (not (vali/errors? :myname :email :pass :pass1)))
+
+
 
 
