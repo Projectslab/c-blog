@@ -2,13 +2,8 @@
   (:use korma.core
         [korma.db :only (defdb)])
   (:require [cblog.config.db :as config]
-<<<<<<< HEAD
             [noir.validation :as vali]
             [noir.util.crypt :as crypt]))
-=======
-            [noir.util.crypt :as crypt]
-            [noir.validation :as vali]))
->>>>>>> b3ee2e74444d838a118a740ec40ed2c1126dbab9
 
 ;;Get db connection
 (defdb db config/db-spec)
@@ -58,8 +53,5 @@
   (vali/rule (= pass pass1)
              [:pass1 "entered passwords do not match"])
   (not (vali/errors? :myname :email :pass :pass1)))
-<<<<<<< HEAD
 
 
-=======
->>>>>>> b3ee2e74444d838a118a740ec40ed2c1126dbab9

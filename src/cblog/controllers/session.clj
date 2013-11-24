@@ -20,15 +20,9 @@
 ;; POST "/session"
 (defn create [email pass]
   ;; Find user in db
-<<<<<<< HEAD
   (let [user (user-model/find-user-by-email email)]
     ;; Validate user and pass
     (if (validate-login? user pass)
-=======
-  (let [user (db-user/find-user-by-email email)]
-    ;; Validate user and pass
-    (if (db-user/validate-login? user pass)
->>>>>>> b3ee2e74444d838a118a740ec40ed2c1126dbab9
       ;; If validation passed then put user id in session
       (do
         (session/put! :user-id (:id user))
@@ -43,24 +37,4 @@
 ;; DELETE "/session"
 (defn destroy []
   (session/clear!)
-  (resp/redirect "/"))
-<<<<<<< HEAD
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-=======
->>>>>>> b3ee2e74444d838a118a740ec40ed2c1126dbab9
+  (resp/redirect "/"))

@@ -12,23 +12,14 @@
 
   ;; Show user registration form
   (GET "/users/new" []
-<<<<<<< HEAD
        (users-ctrl/unew))
-=======
-       (users-ctrl/new-user))
->>>>>>> b3ee2e74444d838a118a740ec40ed2c1126dbab9
 
   ;; Create user
   (POST "/users" [myname email pass pass1]
         (users-ctrl/create myname email pass pass1))
 
   ;; Show user
-<<<<<<< HEAD
   (GET "/users/:id" [id] (users-ctrl/show id))
-=======
-  ;;TODO: 'show' should have a param ':id'
-  (GET "/users/:id" [id] (users-ctrl/show))
->>>>>>> b3ee2e74444d838a118a740ec40ed2c1126dbab9
 
   ;; Update user
   (PUT "/users/:id" [id params] (users-ctrl/update id params)))
@@ -67,8 +58,6 @@
     "home.html" {:content (md/md->html "/md/docs.md")}))
 
 (defroutes home-routes
-<<<<<<< HEAD
-  (GET "/" [] (home-page)))
-=======
-           (GET "/" [] (home-page)))
->>>>>>> b3ee2e74444d838a118a740ec40ed2c1126dbab9
+  (GET "/" [] (home-page)))
+
+
