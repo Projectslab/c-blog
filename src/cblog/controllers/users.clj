@@ -11,14 +11,9 @@
 
 ;; GET /users/:id
 (defn show [id]
-  (let [_id (re-find #"^\d+$" id)
-        user (user-model/find-user
-               (or (and (not (nil? _id))
-                        (read-string _id))
-                   -1))]
-    (layout/render
-      "users/show.html"
-      {:user-info user})))
+  (layout/render
+    "users/show.html"
+    {:user-info (user-model/find-user id)}))
 
 ;; GET /users/new
 (defn unew [& [myname email]]
