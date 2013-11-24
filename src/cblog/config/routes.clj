@@ -36,7 +36,7 @@
         (session/create email pass))
 
   ;; Destroy session ( logout )
-  (DELETE "/session/" []
+  (POST "/session/" []
         (session/destroy)))
 
 (def messages
