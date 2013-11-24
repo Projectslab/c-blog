@@ -11,7 +11,7 @@
 ;; GET "/session/new"
 (defn new []
   (layout/render
-    "login.html"
+    "session/new.html"
      {
        :email-error (vali/on-error :email first)
        :pass-error (vali/on-error :pass first)
@@ -29,7 +29,7 @@
         (resp/redirect "/"))
       ;; If validation failed then render login page again
       (layout/render
-        "login.html"
+        "session/new.html"
         {:email email
          :email-error (vali/on-error :email first)
          :pass-error  (vali/on-error :pass first)}))))

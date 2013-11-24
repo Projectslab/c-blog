@@ -12,13 +12,13 @@
 ;; GET /users/:id
 (defn show [id]
   (layout/render
-    "profile.html"
+    "users/show.html"
     {:user (user-model/find-user id)}))
 
 ;; GET /users/new
 (defn unew [& [myname email]]
   (layout/render
-    "registration.html"
+    "users/new.html"
     {
      :myname myname
      :email email
@@ -26,7 +26,9 @@
      :myname-error (vali/on-error :myname first)
      :email-error (vali/on-error :email first)
      :pass-error (vali/on-error :pass first)
-     :pass1-error (vali/on-error :pass1 first)}))
+     :pass1-error (vali/on-error :pass1 first)
+     }))
+
 
 ;; POST /users/
 (defn create [myname email pass pass1]
