@@ -5,7 +5,8 @@
             [taoensso.timbre :as timbre]
             [com.postspectacular.rotor :as rotor]
             [cblog.config.routes :refer [cljs-routes home-routes user-routes session-routes]]
-            [cblog.config.schema :as schema]))
+            [cblog.config.schema :as schema]
+            [clojure.pprint]))
 
 (defroutes
   app-routes
@@ -29,9 +30,17 @@
     [:shared-appender-config :rotor]
     {:path "cblog.log", :max-size (* 512 1024), :backlog 10})
   ;(schema/create-tables)
-  (timbre/info "cblog started successfully")
+  (timbre/info "cblog started successfully"))
 
-  )
+;(defn dev-log [handler]
+;  (fn [request]
+;    (let [response (handler request)]
+;      (timbre/info
+;        "request:\n"
+;        (with-out-str (clojure.pprint/pprint request))
+;        "\nresponse:\n"
+;        (with-out-str (clojure.pprint/pprint response))
+;      response))))
 
 (defn destroy
   "destroy will be called when your application
@@ -43,8 +52,9 @@
  (middleware/app-handler
    [cljs-routes user-routes session-routes home-routes app-routes]
    :middleware
-   []
+   [];dev-log
    :access-rules
    []
    :formats
    [:json-kw :edn]))
+
