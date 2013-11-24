@@ -7,9 +7,9 @@
 				 	<i class="icon-user"></i>{{user-id}} <b class="caret"></b>
 				 </a>
 				 <ul class="dropdown-menu">
-				 	<li><a href="{{servlet-context}}/profile">Profile</a></li>
+                     <li><a href="{{servlet-context}}/users/{{user-id}}">Profile</a></li>
 					<li class="divider"></li>
-					<li><a href="{{servlet-context}}/logout">Sign Out</a></li>
+                     <li><a href="{{servlet-context}}/session/">Sign Out</a></li>
 				 </ul>
 			 </li>
 		</ul>
@@ -18,10 +18,10 @@
 	<div class="btn-group pull-right">
 		<ul class="nav navbar-nav">
 			 <li class="dropdown">
-				<a href="{{servlet-context}}/login">Login</a>
+                 <a href="{{servlet-context}}/session/new">Login</a>
 			</li>
 			<li>
-				<a href="{{servlet-context}}/register">Register</a>
+                <a href="{{servlet-context}}/users/new">Register</a>
 			</li>
 		</ul>
 	</div>
