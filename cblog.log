@@ -248,3 +248,9 @@ response:
 2013-ноя-25 22:08:59 +0400 Dave-ПК INFO [cblog.handler] - cblog started successfully
 2013-ноя-25 22:09:16 +0400 Dave-ПК ERROR [cblog.controllers.users] - unable to find user #<NumberFormatException java.lang.NumberFormatException: For input string: "ert">
 2013-ноя-25 22:52:20 +0400 Dave-ПК ERROR [cblog.controllers.users] - unable to find user #<NumberFormatException java.lang.NumberFormatException: For input string: "ert">
+2013-ноя-26 00:07:49 +0400 Dave-ПК INFO [cblog.handler] - cblog started successfully
+2013-ноя-26 00:20:54 +0400 Dave-ПК INFO [cblog.handler] - cblog started successfully
+2013-ноя-26 00:31:42 +0400 Dave-ПК INFO [cblog.handler] - cblog started successfully
+2013-ноя-26 00:42:02 +0400 Dave-ПК INFO [cblog.handler] - cblog started successfully
+2013-ноя-26 00:43:16 +0400 Dave-ПК INFO [cblog.handler] - cblog started successfully
+2013-ноя-26 00:50:22 +0400 Dave-ПК INFO [cblog.handler] - cblog started successfully

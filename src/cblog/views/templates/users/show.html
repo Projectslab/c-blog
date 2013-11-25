@@ -8,7 +8,9 @@
 {% if user-info %}
   <h3>Hello {{user-info.name}} </h3>
   <hr>
+{% if current-user %}
   <p><button class="btn btn-default">Напишем статейку</button></p>
+{% endif %}
   <div class="row">
   <form action="" method="post" class="col-md-5">
       <input type="text" name="title" id="title" class="form-control" placeholder="title">
