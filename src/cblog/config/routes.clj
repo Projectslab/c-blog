@@ -32,11 +32,11 @@
   (GET "/session/new" [] (session/new))
 
   ;; New session
-  (POST "/session" [id pass]
-        (session/create id pass))
+  (POST "/session" [email pass]
+        (session/create email pass))
 
   ;; Destroy session ( logout )
-  (DELETE "/session/" []
+  (POST "/session/" []
         (session/destroy)))
 
 (def messages
@@ -62,4 +62,5 @@
 
 
 
-
+
+

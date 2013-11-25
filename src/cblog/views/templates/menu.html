@@ -10,7 +10,7 @@
 				 <ul class="dropdown-menu">
                      <li><a href="{{servlet-context}}/users/{{user.id}}">Profile</a></li>
 					<li class="divider"></li>
-                     <li><a href="{{servlet-context}}/session/">Sign Out</a></li>
+                     <li><form action="{{servlet-context}}/session/" method="POST"><input type="submit" value="Sign Out" class="btn"></form></li>
 				 </ul>
 			 </li>
 		</ul>

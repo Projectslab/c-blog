@@ -13,7 +13,7 @@
 (defn show [id]
   (layout/render
     "users/show.html"
-    {:user-info (user-model/find-user (read-string id))}))
+    {:user-info (user-model/find-user id)}))
 
 ;; GET /users/new
 (defn unew [& [myname email]]
@@ -35,8 +35,9 @@
   (if (validate-registration? myname email pass pass1)
     (try
       (do
-        (user-model/create-user {:name myname :email email :pass (crypt/encrypt pass)})
-        (session/put! :user-id email)
+        ;; put newly created user in local var
+        (let [new-user (user-model/create-user {:name myname :email email :pass (crypt/encrypt pass)})]
+          (session/put! :user-id (:id new-user)))
         (resp/redirect "/"))
       (catch Exception ex
         (vali/rule false [:any-error (.getMessage ex)])
