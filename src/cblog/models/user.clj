@@ -11,17 +11,6 @@
 ;;Define user model, entity
 (defentity users)
 
-;; return integer id or -1
-(defn parse-id [id]
-  (if (number? id)
-    ;; if id is already number just return it
-    id
-    ;; store matched id in local variable
-    (let [_id (re-find #"^\d+$" id)]
-      ;; integer id or -1
-      (or (and (not (nil? _id))
-               (read-string _id))
-          -1))))
 
 (defn create-user [user]
   (insert users
@@ -36,7 +25,7 @@
 
 (defn find-user [id]
   (first (select users
-                 (where {:id (parse-id id)})
+                 (where {:id id})
                  )))
 
 (defn find-user-by-email [email]
@@ -67,3 +56,4 @@
   (vali/rule (= pass pass1)
              [:pass1 "entered passwords do not match"])
   (not (vali/errors? :myname :email :pass :pass1)))
+
