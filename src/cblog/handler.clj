@@ -51,7 +51,7 @@
 
 (def app
  (middleware/app-handler
-   [cljs-routes user-routes session-routes home-routes app-routes post-routes]
+   [post-routes cljs-routes user-routes session-routes home-routes app-routes ]
    :middleware
    []
    :access-rules
