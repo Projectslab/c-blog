@@ -20,6 +20,17 @@
       <input type="submit" class="btn btn-default" id="post-submit" value="Submit">
   </form>
   </div>
+
+  <h3>Мои статьи</h3>
+<div class="row-fluid">
+    <div class="span8">
+        {% for post in posts %}
+        <div><h4><a href="{{servlet-context}}/posts/{{post.id}}">{{post.title}}</a></h4>
+            <a href="{{servlet-context}}/posts/edit/{{post.id}}">Edit</a>
+            <a href="{{servlet-context}}/posts/delete/{{post.id}}">Delete</a></div>
+        {% endfor %}
+    </div>
+</div>
 {% else %}
   <h3>{{error}}</h3>
 {% endif %}

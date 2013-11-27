@@ -1,0 +1,9 @@
+{% extends "cblog/views/templates/layout.html" %}
+{% block content %}
+{% if post %}
+        <div>
+            <h3>{{post.title}}</h3>
+            <h4>{{post.subject}}</h4>
+        </div>
+{% endif %}
+{% endblock %}

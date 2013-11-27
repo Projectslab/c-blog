@@ -21,6 +21,11 @@
           {:error "unable to find users"}))))
 ;(empty? (post-model/get-all-posts))
 
+(defn post-info [id]
+  (post-model/get-post (read-string id)))
+
+(defn check-user [user-id]
+  (= (session/get :user-id) user-id))
 
 ;; POST /posts/
 (defn create [title subject]
@@ -31,7 +36,18 @@
                             :created_at timenow})
    (resp/redirect "/")))
 
+(defn edit-form [id]
+  (let [post-info (post-info id)]
+    (layout/render "posts/edit.html"
+      (if (check-user (:user_id post-info))
+        {:post post-info}
+        {:error "You havn't rights to edit this title"}))))
 
+(defn delete [id]
+  (let [post-info (post-info id)]
+    (if (check-user (:user_id post-info))
+      (post-model/delete-post (read-string id)))
+    (resp/redirect "/")))
 ;(to-long (from-time-zone (local-now) (time-zone-for-offset 0)))
 ;(def myformatter (formatters :rfc822))
 
@@ -48,4 +64,5 @@
 
 
 
-
+
+
