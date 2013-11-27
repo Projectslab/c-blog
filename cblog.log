@@ -265,3 +265,4 @@ response:
 2013-ноя-27 20:15:52 +0400 Dave-ПК ERROR [cblog.controllers.application] - error #<PSQLException org.postgresql.util.PSQLException: ОШИБКА: отношение "user" не существует
   Позиция: 22>
 2013-ноя-27 20:28:17 +0400 Dave-ПК INFO [cblog.handler] - cblog started successfully
+2013-ноя-27 20:37:56 +0400 Dave-ПК INFO [cblog.handler] - cblog started successfully

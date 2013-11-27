@@ -22,10 +22,9 @@
 
 (defn get-all-posts []
   (select posts
-        (fields :id :title :subject :created_at))
-)
+        (fields :id :title :subject :created_at)))
 
-;(select posts
-;        (fields :id :title :subject :created_at))
+;(select posts (fields :id :title :subject :created_at))
+;(get-all-posts)
 
 

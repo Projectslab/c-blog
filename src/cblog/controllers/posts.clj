@@ -19,7 +19,7 @@
         (catch Exception ex
           (timbre/error "unable to find users" ex)
           {:error "unable to find users"}))))
-
+;(empty? (post-model/get-all-posts))
 
 
 ;; POST /posts/
@@ -39,6 +39,8 @@
 
 
 ;[clj-time.format :only [formatter formatters unparse ]]
+
+
 
 
 
