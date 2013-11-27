@@ -1,3 +1,17 @@
-{{posts}}
+{% extends "cblog/views/templates/layout.html" %}
+{% block content %}
+<h2> Welcome to Cblog</h2>
+ <div class="row-fluid">
+    <div class="span8">
+       {% if posts %}
+         {{posts}}
+       {% else %}
+          <h3> No posts </h3>
+       {% endif %}
+    </div>
+ </div>
+{% endblock %}
+
+
 
 

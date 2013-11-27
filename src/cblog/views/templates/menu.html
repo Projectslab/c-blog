@@ -1,10 +1,10 @@
 <div class="navbar-collapse collapse">
 
-{% if user %}
+{% if current-user %}
 		<ul class="nav navbar-nav navbar-right">
 		  <li>
             <a href="{{servlet-context}}/users/{{user.id}}">
-                <span class="glyphicon glyphicon-user"></span><span style="margin-left:5px;">{{user.name}}</span></a>
+                <span class="glyphicon glyphicon-user"></span><span style="margin-left:5px;">{{current-user.name}}</span></a>
           </li>
           <li>
             <form action="{{servlet-context}}/session/" method="POST" class="navbar-form">

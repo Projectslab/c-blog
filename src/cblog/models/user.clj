@@ -56,4 +56,6 @@
   (vali/rule (= pass pass1)
              [:pass1 "entered passwords do not match"])
   (not (vali/errors? :myname :email :pass :pass1)))
+
+
 

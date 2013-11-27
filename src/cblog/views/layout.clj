@@ -20,13 +20,15 @@
           params
           (keyword (s/replace template #".html" "-selected")) "active"
           :servlet-context (:context request)
-          :user (app/current-user))
+          :current-user (app/current-user))
         (parser/render-file (str template-path template))
         response)
       "text/html; charset=utf-8")))
 
 (defn render [template & [params]]
   (RenderableTemplate. template params))
+
+
 
 
 

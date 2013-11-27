@@ -16,8 +16,7 @@
   (layout/render
     "users/show.html"
     (try
-      {:user-info (user-model/find-user (Integer/parseInt id))
-       :current-user (current-user)}
+      {:user-info (user-model/find-user (Integer/parseInt id))}
       (catch Exception ex
         (timbre/error "unable to find user" ex)
         {:error "user not found"}))))
