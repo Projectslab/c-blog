@@ -3,7 +3,7 @@
 {% if current-user %}
 		<ul class="nav navbar-nav navbar-right">
 		  <li>
-            <a href="{{servlet-context}}/users/{{user.id}}">
+            <a href="{{servlet-context}}/users/{{current-user.id}}">
                 <span class="glyphicon glyphicon-user"></span><span style="margin-left:5px;">{{current-user.name}}</span></a>
           </li>
           <li>

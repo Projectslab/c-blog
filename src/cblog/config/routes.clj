@@ -26,10 +26,11 @@
   (PUT "/users/:id" [id params] (users-ctrl/update id params)))
 
 ;;;;;;;;;;;; Posts routes ;;;;;;;;;;;;;;;;;
+(defroutes post-routes
 
-;; Create post
-(POST "/posts" [title subject]
-        (posts-ctrl/create title subject))
+  ;; Create post
+  (POST "/posts" [title subject]
+          (posts-ctrl/create title subject)))
 
 ;;;;;;;;;;;;;; Session routes ;;;;;;;;;;;;;;;;
 
@@ -67,6 +68,8 @@
 ;; List all posts on index page
 (defroutes home-routes
   (GET "/" [] (posts-ctrl/index)))
+
+
 
 
 
