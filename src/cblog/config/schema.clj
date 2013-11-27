@@ -15,7 +15,14 @@
 ;      [:is_active :boolean]
 ;      [:pass "varchar(100)"])))
 
-;(defn create-tables
-;  "creates the database tables used by the application"
-;  []
-;  (create-users-table))
+;(defn create-posts-table []
+;  (sql/with-connection db-spec
+;    (sql/create-table
+;      :posts
+;      [:id "SERIAL primary key"]
+;      [:titile "varchar(300)"]
+;      [:subject "text"]
+;      [:user_id "integer"]
+;      )))
+
+

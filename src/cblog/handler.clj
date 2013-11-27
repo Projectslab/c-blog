@@ -29,7 +29,8 @@
   (timbre/set-config!
     [:shared-appender-config :rotor]
     {:path "cblog.log", :max-size (* 512 1024), :backlog 10})
-  ;(schema/create-tables)
+  ;(schema/create-posts-table)
+  (selmer.parser/cache-off!)
   (timbre/info "cblog started successfully"))
 
 (defn dev-log [handler]
@@ -57,6 +58,10 @@
    []
    :formats
    [:json-kw :edn]))
+
+
+
+
 
 
 

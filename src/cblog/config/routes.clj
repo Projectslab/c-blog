@@ -3,11 +3,12 @@
   (:require
     [cblog.controllers.session :as session]
     [cblog.controllers.users :as users-ctrl]
+    [cblog.controllers.posts :as posts-ctrl]
     [noir.response :as response]
     [cblog.views.layout :as layout]
     [cblog.utils.md :as md]))
 
-;; User routes
+;;;;;;;;;;;;;;;;; User routes  ;;;;;;;;;;;;;;;;;;;
 (defroutes user-routes
 
   ;; Show user registration form
@@ -24,7 +25,13 @@
   ;; Update user
   (PUT "/users/:id" [id params] (users-ctrl/update id params)))
 
-;; Session routes
+;;;;;;;;;;;; Posts routes ;;;;;;;;;;;;;;;;;
+
+;; Create post
+(POST "/posts" [title subject]
+        (posts-ctrl/create title subject))
+
+;;;;;;;;;;;;;; Session routes ;;;;;;;;;;;;;;;;
 
 (defroutes session-routes
 
@@ -38,6 +45,8 @@
   ;; Destroy session ( logout )
   (POST "/session/" []
         (session/destroy)))
+
+;;;;;;;;;;;;;;;; CLJS routes ;;;;;;;;;;;;;;;;;;;;;;;
 
 (def messages
   (atom
@@ -53,14 +62,19 @@
         (response/edn
           (swap! messages conj {:message message :user user}))))
 
-(defn home-page []
-  (layout/render
-    "home.html" {:content (md/md->html "/md/docs.md")}))
+;;;;;;;;;;;;;;;;;  Home routes ;;;;;;;;;;;;;;;;;;;
 
+;; List all posts on index page
 (defroutes home-routes
-  (GET "/" [] (home-page)))
+  (GET "/" [] (posts-ctrl/index)))
 
 
 
 
 
+
+
+
+
+
+

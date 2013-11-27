@@ -17,10 +17,11 @@
     "users/show.html"
     (try
       {:user-info (user-model/find-user (Integer/parseInt id))
-       :current-user current-user}
+       :current-user (current-user)}
       (catch Exception ex
         (timbre/error "unable to find user" ex)
         {:error "user not found"}))))
+
 
 ;; GET /users/new
 (defn unew [& [myname email]]
