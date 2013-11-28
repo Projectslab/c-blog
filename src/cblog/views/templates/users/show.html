@@ -9,10 +9,10 @@
   <h3>Hello {{user-info.name}} </h3>
   <hr>
 {% if current-user %}
-  <p><button class="btn btn-default">Напишем статейку</button></p>
+  <p><button id="new-post-button" class="btn btn-default">Напишем статейку</button></p>
 {% endif %}
-  <div class="row">
-      <form id="new-post" action="{{servlet-context}}/posts" method="POST" class="col-md-5">
+  <div class="row" id="new-post-wrapper" style="display:none;">
+      <form action="{{servlet-context}}/posts" method="POST" class="col-md-5">
       <input type="text" name="title" id="title" class="form-control" placeholder="title">
       <br/>
       <textarea row=3 name="subject" id="subject" class="form-control" placeholder="subject"></textarea>
