@@ -12,7 +12,7 @@
   <p><button class="btn btn-default">Напишем статейку</button></p>
 {% endif %}
   <div class="row">
-      <form action="{{servlet-context}}/posts" method="POST" class="col-md-5">
+      <form id="new-post" action="{{servlet-context}}/posts" method="POST" class="col-md-5">
       <input type="text" name="title" id="title" class="form-control" placeholder="title">
       <br/>
       <textarea row=3 name="subject" id="subject" class="form-control" placeholder="subject"></textarea>
@@ -35,4 +35,11 @@
   <h3>{{error}}</h3>
 {% endif %}
 
+{% endblock %}
+
+{% block scripts %}
+<script src="/js/site.js"></script>
+<script>
+    cblog.posts.init();
+</script>
 {% endblock %}
