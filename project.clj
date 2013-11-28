@@ -40,9 +40,10 @@
    :aot
    :all
    :plugins [[lein-ring "0.8.7"]
-             [lein-cljsbuild "0.3.3"]]
+             [lein-cljsbuild "1.0.0"]]
    :description "Simple collective blog with authorisation"
    :min-lein-version "2.0.0"
    :repl-options {:init-ns cblog.repl})
 
-
+
+
