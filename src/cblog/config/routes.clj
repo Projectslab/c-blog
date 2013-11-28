@@ -31,10 +31,14 @@
   ;; Create post
   (POST "/posts" [title subject]
           (posts-ctrl/create title subject))
-  ;; edit form
-  (GET "/posts/edit/:id" [id] (posts-ctrl/edit-form id))
+  ;; update post
+  (PUT "/posts/:id" [id title subject] (posts-ctrl/update id title subject))
 
-  (GET "/posts/delete/:id" [id] (posts-ctrl/delete id)))
+  ;; delete post
+  (DELETE "/posts/:id" [id] (posts-ctrl/delete id))
+
+  ;; view post
+  (GET "/posts/:id" [id] (posts-ctrl/show id)))
 
 ;;;;;;;;;;;;;; Session routes ;;;;;;;;;;;;;;;;
 

@@ -4,7 +4,7 @@
              [noir.session :as session]
              [taoensso.timbre :as timbre]
              [cblog.views.layout :as layout]
-             )
+             [noir.response :refer [edn]])
   (:use
      [clj-time.local :only[local-now]]
      [clj-time.core :only [from-time-zone time-zone-for-offset default-time-zone ]]
@@ -27,27 +27,36 @@
 (defn check-user [user-id]
   (= (session/get :user-id) user-id))
 
-;; POST /posts/
+;; POST /posts
 (defn create [title subject]
-  (let [timenow (to-long (from-time-zone (local-now) (time-zone-for-offset 0)))]
-   (post-model/create-post {:title title
-                            :subject subject
-                            :user_id (session/get :user-id)
-                            :created_at timenow})
-   (resp/redirect "/")))
+  (let [timenow (to-long (from-time-zone (local-now) (time-zone-for-offset 0)))
+        last-row (post-model/create-post {:title title
+                                         :subject subject
+                                         :user_id (session/get :user-id)
+                                         :created_at timenow})]
+    (if-not (nil? last-row)
+      (edn {:result "ok" :id (:id last-row)})
+      (edn {:result "error"}))))
 
-(defn edit-form [id]
+;; PUT /posts/:id
+(defn update [id title subject]
   (let [post-info (post-info id)]
     (layout/render "posts/edit.html"
       (if (check-user (:user_id post-info))
         {:post post-info}
         {:error "You havn't rights to edit this title"}))))
 
+;; DELETE /posts/:id
 (defn delete [id]
   (let [post-info (post-info id)]
     (if (check-user (:user_id post-info))
       (post-model/delete-post (read-string id)))
     (resp/redirect "/")))
+
+;; GET/posts/:id
+(defn show [id]
+  (println "show post"))
+
 ;(to-long (from-time-zone (local-now) (time-zone-for-offset 0)))
 ;(def myformatter (formatters :rfc822))
 
