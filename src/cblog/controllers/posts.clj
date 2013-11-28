@@ -30,6 +30,9 @@
 ;; POST /posts
 (defn create [title subject]
   (let [timenow (to-long (from-time-zone (local-now) (time-zone-for-offset 0)))
+        ;; models function returns info about last inserted row,
+        ;; needed it to know weather was inserted data or not, and
+        ;; to send id of the last row back to browser
         last-row (post-model/create-post {:title title
                                          :subject subject
                                          :user_id (session/get :user-id)
