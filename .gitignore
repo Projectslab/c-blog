@@ -12,6 +12,7 @@ pom.xml.asc
 cblog.log
 .nrepl-port
 Procfile
+/resources/public/js/site.js
 
 ## IDEA ##
 /.idea/

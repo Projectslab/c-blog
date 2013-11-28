@@ -19,12 +19,26 @@
   (insert posts
           (values post)))
 
+(defn get-all-users-post [user-id]
+  (select posts
+          (fields :id :title :subject :created_at)
+          (where {:user_id user-id})))
 
 (defn get-all-posts []
   (select posts
         (fields :id :title :subject :created_at)))
 
+(defn get-post [id]
+  (first (select posts
+                 (fields :id :title :subject :user_id)
+                 (where {:id id}))))
+
+(defn delete-post [id]
+  (delete posts
+          (where {:id id})))
+
 ;(select posts (fields :id :title :subject :created_at))
 ;(get-all-posts)
 
-
+
+

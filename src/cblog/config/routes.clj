@@ -30,7 +30,11 @@
 
   ;; Create post
   (POST "/posts" [title subject]
-          (posts-ctrl/create title subject)))
+          (posts-ctrl/create title subject))
+  ;; edit form
+  (GET "/posts/edit/:id" [id] (posts-ctrl/edit-form id))
+
+  (GET "/posts/delete/:id" [id] (posts-ctrl/delete id)))
 
 ;;;;;;;;;;;;;; Session routes ;;;;;;;;;;;;;;;;
 
@@ -80,4 +84,5 @@
 
 
 
-
+
+

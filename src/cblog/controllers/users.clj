@@ -6,6 +6,7 @@
     [noir.response :as resp]
     [noir.validation :as vali]
     [cblog.models.user :as user-model]
+    [cblog.models.post :as post-model]
     [taoensso.timbre :as timbre]
     [cblog.controllers.application :refer[current-user]]
     [cblog.models.user :refer [validate-registration?]]))
@@ -16,7 +17,8 @@
   (layout/render
     "users/show.html"
     (try
-      {:user-info (user-model/find-user (Integer/parseInt id))}
+      {:user-info (user-model/find-user (Integer/parseInt id))
+       :posts (post-model/get-all-users-post (session/get :user-id))}
       (catch Exception ex
         (timbre/error "unable to find user" ex)
         {:error "user not found"}))))
