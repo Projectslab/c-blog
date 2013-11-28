@@ -1,9 +1,14 @@
 {% extends "cblog/views/templates/layout.html" %}
 {% block content %}
 {% if post %}
-        <div>
-            <h3>{{post.title}}</h3>
-            <h4>{{post.subject}}</h4>
-        </div>
+<div class="row">
+    <form action="{{servlet-context}}/posts/edit/{{post.id}}" method="POST" class="col-md-5">
+        <input type="text" name="title" id="title" class="form-control" placeholder="title" value="{{post.title}}">
+        <br/>
+        <textarea row=3 name="subject" id="subject" class="form-control" placeholder="subject">{{post.subject}}</textarea>
+        <br/>
+        <input type="submit" class="btn btn-default" id="post-submit" value="Submit">
+    </form>
+</div>
 {% endif %}
 {% endblock %}
