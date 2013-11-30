@@ -6,7 +6,7 @@
             [dommy.core :as dommy]
             [dommy.utils :as utils])
   (:use-macros
-    [dommy.macros :only [sel sel1 node]]))
+    [dommy.macros :only [sel sel1 node deftemplate]]))
 
 ;; calculated once selectors
 (def wrapper
@@ -50,11 +50,18 @@
                                         "block"
                                         "none")})))))
 
-(defn delete-handler [resp]
-  (if (= (:result resp) "ok")
-    ;; TODO: replace it with
-    (js/console.log "ok")
-    (js/console.log "error")))
+(deftemplate message [text]
+  [:div.message ^:text text])
+
+(defn delete-handler [elem]
+  (fn [resp]
+    (->> (sel :.message )
+         (mapv #(dommy/remove! %)))
+    (if (= (:result resp) "ok")
+      (do (dommy/insert-before! (message "Статья успешно удалена") elem)
+          (dommy/remove! elem))
+      (dommy/insert-before! (message (:error resp)) elem))))
+
 
 ;; delete post
 (defn delete-post []
@@ -65,10 +72,11 @@
          (fn [e]
            (.preventDefault e)
            ;; get id of post stored in data-id attr of parent's div
-           (let [id (dommy/attr (dommy/closest % :div) :data-id)]
+           (let [post-div (dommy/closest % :div)
+                 id (dommy/attr post-div :data-id)]
              (ajax-request "/posts" "DELETE"
                            (transform-opts {:params {:id id}
-                                            :handler delete-handler}))))))))
+                                            :handler (delete-handler post-div)}))))))))
 
 ;; function to export
 (defn ^:export init []

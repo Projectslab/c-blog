@@ -47,7 +47,7 @@
     (layout/render "posts/edit.html"
       (if (check-user (:user_id post-info))
         {:post post-info}
-        {:error "You havn't permissios to edit this post"}))))
+        {:error "You don't have permissios to edit this post"}))))
 
 ;; DELETE /posts
 (defn delete [id]
@@ -55,7 +55,7 @@
     (if (check-user (:user_id post-info))
       (do (post-model/delete-post (read-string id))
           (edn {:result "ok"}))
-      (edn {:error "You havn't permissios to delete this post"}))))
+      (edn {:error "You don't have permissios to delete this post"}))))
 
 ;; GET/posts/:id
 (defn show [id]
