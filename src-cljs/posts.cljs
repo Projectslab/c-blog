@@ -91,8 +91,62 @@
                                    (transform-opts {:params {:id id}
                                                     :handler (delete-handler post-div)}))))))
 
+;; update form template
+(deftemplate update-form [title subject id]
+  [:div#update
+   [:form
+    [:input#title.form-control {:type "text" :required "required" :value title}]
+    [:textarea#subject.form-control {:required "required"} ^:text (str subject)]
+    [:input#id {:type "hidden" :value id}]
+    [:input.btn.btn-default {:type "submit" :value "Update"}]]])
+
+;; get info handler
+(defn get-handler [resp]
+  (dommy/append! (sel1 :#posts) (update-form (:title resp) (:subject resp) (:id resp)))
+  )
+
+;; edit click listener
+(defn click-edit []
+  (let [elem (sel1 :#update)]
+    (if-not (nil? elem)
+      (dommy/remove! elem)))
+  (dommy/listen! [(sel1 :#posts) :.edit-post] :click
+     (fn [e]
+       (.preventDefault e)
+       (let [post-div (dommy/closest (.-selectedTarget e) :div)
+             id (dommy/attr post-div :data-id)]
+         (GET (str "/posts/" id "/data") {:handler get-handler})))))
+
+(defn update-handler [id]
+  (fn [resp]
+    (->> (sel :.message)
+         (mapv #(dommy/remove! %)))
+    (if (= (:result resp))
+      (do (let [elem (sel1 :#update)]
+            (js/console.log elem)
+            (if-not (nil? elem)
+              (dommy/remove! elem)))
+          (js/console.log (sel1 [:#posts :div {:data-id id}]))))))
+
+(defn update-post []
+  (dommy/listen! [(sel1 :#posts) :#update :form] :submit
+                 (fn [e]
+                   (.preventDefault e)
+                   (.stopPropagation e)
+                   (let [form (.-selectedTarget e)
+                         title (dommy/value (-> form (sel1 :#title)))
+                         subject (dommy/value (-> form (sel1 :#subject)))
+                         id (dommy/value (-> form (sel1 :#id)))]
+                     (js/console.log form title subject id)
+                     (PUT (str "/posts/" id) {:params {:title title
+                                                       :subject subject}
+                                              :handler (update-handler id)}))
+                   false)))
+
 ;; function to export
 (defn ^:export init []
   (send-post)
   (toggle-form)
-  (delete-post))
+  (delete-post)
+  (click-edit)
+  (update-post))

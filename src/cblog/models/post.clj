@@ -37,6 +37,12 @@
   (delete posts
           (where {:id id})))
 
+(defn update-post [id title subject]
+  (update posts
+          (set-fields {:title title
+                       :subject subject})
+          (where {:id id})))
+
 ;(select posts (fields :id :title :subject :created_at))
 ;(get-all-posts)
 

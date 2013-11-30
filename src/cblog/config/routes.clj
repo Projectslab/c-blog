@@ -38,7 +38,10 @@
   (DELETE "/posts" [id] (posts-ctrl/delete id))
 
   ;; view post
-  (GET "/posts/:id" [id] (posts-ctrl/show id)))
+  (GET "/posts/:id" [id] (posts-ctrl/show id))
+
+  ;; get post data
+  (GET "/posts/:id/data" [id] (posts-ctrl/get-data id)))
 
 ;;;;;;;;;;;;;; Session routes ;;;;;;;;;;;;;;;;
 
