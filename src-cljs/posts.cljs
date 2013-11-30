@@ -15,7 +15,7 @@
 (def button
   (css/sel "#new-post-button"))
 
-(def posts-wrapper (sel1 :.posts))
+(def posts-wrapper (sel1 :#posts))
 
 (deftemplate post-in-list [title subject id]
   [:div {:data-id id}
@@ -56,7 +56,7 @@
 ;; toggle new post form by clicking button
 (defn toggle-form []
   (let [new-post wrapper]
-    (dommy/live-listener (sel1 :body) (by-id "new-post-button") :click
+    (dommy/listen! (by-id "new-post-button") :click
              (fn [e]
                (set-styles! new-post
                             {:display (if (= (:display (styles new-post)) "none")
@@ -78,18 +78,18 @@
 
 ;; delete post
 (defn delete-post []
-  (->> (sel :.delete-post)
-       ;; apply listener to all elements in selector
-       (mapv #(dommy/listen! % :click
-         ;; event hendler
-         (fn [e]
-           (.preventDefault e)
-           ;; get id of post stored in data-id attr of parent's div
-           (let [post-div (dommy/closest % :div)
-                 id (dommy/attr post-div :data-id)]
-             (ajax-request "/posts" "DELETE"
-                           (transform-opts {:params {:id id}
-                                            :handler (delete-handler post-div)}))))))))
+  (dommy/listen! [(sel1 :#posts) :.delete-post] :click
+                 ;; event hendler
+                 (fn [e]
+                   (.preventDefault e)
+                   (js/console.log (.-selectedTarget e))
+                   (js/console.log (dommy/closest (.-selectedTarget e) :div))
+                   ;; get id of post stored in data-id attr of parent's div
+                   (let [post-div (dommy/closest (.-selectedTarget e) :div)
+                         id (dommy/attr post-div :data-id)]
+                     (ajax-request "/posts" "DELETE"
+                                   (transform-opts {:params {:id id}
+                                                    :handler (delete-handler post-div)}))))))
 
 ;; function to export
 (defn ^:export init []
