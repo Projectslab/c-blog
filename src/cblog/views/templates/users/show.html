@@ -23,7 +23,7 @@
 
   <h3>Мои статьи</h3>
 <div class="row-fluid">
-    <div class="span8 posts">
+    <div id="posts" class="span8">
         {% for post in posts %}
         <div data-id="{{post.id}}"><h4><a href="{{servlet-context}}/posts/{{post.id}}">{{post.title}}</a></h4>
             <a href="" class="edit-post">Edit</a>
