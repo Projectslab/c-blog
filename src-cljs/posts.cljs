@@ -15,13 +15,24 @@
 (def button
   (css/sel "#new-post-button"))
 
+(def posts-wrapper (sel1 :.posts))
+
+(deftemplate post-in-list [title subject id]
+  [:div {:data-id id}
+   [:h4
+    [:a {:href (str "/posts/" id)} ^:text title]]
+   [:a.edit-post {:href (str "")} ^:text (str "Edit")]
+   ^:text (str " ")
+   [:a.delete-post {:href (str "")} ^:text (str "Delete")]])
+
 ;; response handlers
-(defn handler [resp]
-  (if (= (:result resp) "ok")
-    (let [id (:id resp)]
-      (insert-after! button "<div>Пост отправлен</div>")
-      #_( TODO: add new post in my post list ))
-    (insert-after! (by-id "new-post-button") "<div>Пост Не отправлен</div>")))
+(defn new-handler [title subject]
+  (fn [resp]
+    (if (= (:result resp) "ok")
+      (let [id (:id resp)]
+        (insert-after! button "<div>Пост отправлен</div>")
+        (dommy/append! posts-wrapper (post-in-list title subject id)))
+      (insert-after! (by-id "new-post-button") "<div>Пост Не отправлен</div>"))))
 
 (defn error-handler [error]
   (insert-after! (by-id "new-post-button") "<div>При отправке поста произошла ошибка</div>"))
@@ -32,18 +43,20 @@
            (fn [e]
              (stop-propagation e)
              (prevent-default e)
-             (let [val (fn [x] (value (-> wrapper (css/sel x))))]
+             (let [val (fn [x] (value (-> wrapper (css/sel x))))
+                   title (val "#title")
+                   subject (val "#subject")]
                ;; AJAX-call - create new post
-               (POST "/posts" {:params {:title   (val "#title")
-                                        :subject (val "#subject")}
-                               :handler handler
+               (POST "/posts" {:params {:title   title
+                                        :subject subject}
+                               :handler (new-handler title subject)
                                :error-handler error-handler}))
              false)))
 
 ;; toggle new post form by clicking button
 (defn toggle-form []
   (let [new-post wrapper]
-    (listen! (by-id "new-post-button") :click
+    (dommy/live-listener (sel1 :body) (by-id "new-post-button") :click
              (fn [e]
                (set-styles! new-post
                             {:display (if (= (:display (styles new-post)) "none")
