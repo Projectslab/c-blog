@@ -47,14 +47,15 @@
     (layout/render "posts/edit.html"
       (if (check-user (:user_id post-info))
         {:post post-info}
-        {:error "You havn't rights to edit this title"}))))
+        {:error "You havn't permissios to edit this post"}))))
 
-;; DELETE /posts/:id
+;; DELETE /posts
 (defn delete [id]
   (let [post-info (post-info id)]
     (if (check-user (:user_id post-info))
-      (post-model/delete-post (read-string id)))
-    (resp/redirect "/")))
+      (do (post-model/delete-post (read-string id))
+          (edn {:result "ok"}))
+      (edn {:error "You havn't permissios to delete this post"}))))
 
 ;; GET/posts/:id
 (defn show [id]
@@ -67,14 +68,3 @@
 
 
 ;[clj-time.format :only [formatter formatters unparse ]]
-
-
-
-
-
-
-
-
-
-
-

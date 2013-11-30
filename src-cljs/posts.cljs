@@ -1,15 +1,19 @@
 (ns cblog.posts
-  (:require [ajax.core :refer [GET POST PUT]]
-            [domina :refer [by-id styles set-styles! value insert-after!]]
+  (:require [ajax.core :refer [GET POST PUT ajax-request transform-opts]]
+            [domina :refer [by-id by-class styles set-styles! value insert-after!]]
             [domina.events :refer [listen! prevent-default stop-propagation]]
-            [domina.css :refer [sel]]))
+            [domina.css :as css]
+            [dommy.core :as dommy]
+            [dommy.utils :as utils])
+  (:use-macros
+    [dommy.macros :only [sel sel1 node]]))
 
 ;; calculated once selectors
 (def wrapper
-  (sel "#new-post-wrapper"))
+  (css/sel "#new-post-wrapper"))
 
 (def button
-  (sel "#new-post-button"))
+  (css/sel "#new-post-button"))
 
 ;; response handlers
 (defn handler [resp]
@@ -24,11 +28,11 @@
 
 ;; send new post
 (defn send-post []
-  (listen! (-> wrapper (sel "form")) :submit
+  (listen! (-> wrapper (css/sel "form")) :submit
            (fn [e]
              (stop-propagation e)
              (prevent-default e)
-             (let [val (fn [x] (value (-> wrapper (sel x))))]
+             (let [val (fn [x] (value (-> wrapper (css/sel x))))]
                ;; AJAX-call - create new post
                (POST "/posts" {:params {:title   (val "#title")
                                         :subject (val "#subject")}
@@ -46,7 +50,28 @@
                                         "block"
                                         "none")})))))
 
+(defn delete-handler [resp]
+  (if (= (:result resp) "ok")
+    ;; TODO: replace it with
+    (js/console.log "ok")
+    (js/console.log "error")))
+
+;; delete post
+(defn delete-post []
+  (->> (sel :.delete-post)
+       ;; apply listener to all elements in selector
+       (mapv #(dommy/listen! % :click
+         ;; event hendler
+         (fn [e]
+           (.preventDefault e)
+           ;; get id of post stored in data-id attr of parent's div
+           (let [id (dommy/attr (dommy/closest % :div) :data-id)]
+             (ajax-request "/posts" "DELETE"
+                           (transform-opts {:params {:id id}
+                                            :handler delete-handler}))))))))
+
 ;; function to export
 (defn ^:export init []
   (send-post)
-  (toggle-form))
+  (toggle-form)
+  (delete-post))

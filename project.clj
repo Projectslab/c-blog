@@ -21,8 +21,7 @@
                   [noir-auth "0.3.0-SNAPSHOT"]
                   [com.postspectacular/rotor "0.1.0"]
                   [postgresql/postgresql "9.1-901.jdbc4"]
-                  [clj-time "0.6.0"]
-                  [jayq "2.5.0"]]
+                  [clj-time "0.6.0"]]
 
    :cljsbuild
    {:builds [{:source-paths ["src-cljs"]
@@ -45,6 +44,3 @@
    :description "Simple collective blog with authorisation"
    :min-lein-version "2.0.0"
    :repl-options {:init-ns cblog.repl})
-
-
-
