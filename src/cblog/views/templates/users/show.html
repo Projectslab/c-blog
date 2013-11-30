@@ -23,9 +23,9 @@
 
   <h3>Мои статьи</h3>
 <div class="row-fluid">
-    <div class="span8">
+    <div class="span8 posts">
         {% for post in posts %}
-        <div><h4><a href="{{servlet-context}}/posts/{{post.id}}">{{post.title}}</a></h4>
+        <div data-id="{{post.id}}"><h4><a href="{{servlet-context}}/posts/{{post.id}}">{{post.title}}</a></h4>
             <a href="" class="edit-post">Edit</a>
             <a href="" class="delete-post">Delete</a></div>
         {% endfor %}

@@ -35,7 +35,7 @@
   (PUT "/posts/:id" [id title subject] (posts-ctrl/update id title subject))
 
   ;; delete post
-  (DELETE "/posts/:id" [id] (posts-ctrl/delete id))
+  (DELETE "/posts" [id] (posts-ctrl/delete id))
 
   ;; view post
   (GET "/posts/:id" [id] (posts-ctrl/show id)))
@@ -76,17 +76,3 @@
 ;; List all posts on index page
 (defroutes home-routes
   (GET "/" [] (posts-ctrl/index)))
-
-
-
-
-
-
-
-
-
-
-
-
-
-
