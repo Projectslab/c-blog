@@ -44,10 +44,11 @@
 ;; PUT /posts/:id
 (defn update [id title subject]
   (let [post-info (post-info id)]
-    (layout/render "posts/edit.html"
-      (if (check-user (:user_id post-info))
-        {:post post-info}
-        {:error "You don't have permissios to edit this post"}))))
+    (if (check-user (:user_id post-info))
+      (if (post-model/update-post (read-string id) title subject)
+          (edn {:result "ok"})
+          (edn {:error "Error while updating post"}))
+      (edn {:error "You don't have permissios to edit this post"}))))
 
 ;; DELETE /posts
 (defn delete [id]
@@ -60,6 +61,9 @@
 ;; GET/posts/:id
 (defn show [id]
   (println "show post"))
+
+(defn get-data [id]
+  (edn (post-info id)))
 
 ;(to-long (from-time-zone (local-now) (time-zone-for-offset 0)))
 ;(def myformatter (formatters :rfc822))
