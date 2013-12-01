@@ -16,19 +16,23 @@
     (try
         {:posts (post-model/get-all-posts)}
         (catch Exception ex
-          (timbre/error "unable to find users" ex)
-          {:error "unable to find users"}))))
-
+          (timbre/error "unable to find posts" ex)
+          {:error "unable to find posts"}))))
 
 ;; Show ;; GET /posts/:id
-(defn show [id]
-  (let [post (post-model/get-post (read-string id))]
-    ))
 
+(defn show [id]
+  (layout/render
+   "/posts/show.html"
+    (try
+        {:post (post-model/get-post id)}
+        (catch Exception ex
+          (timbre/error "unable to find post" ex)
+          {:error "unable to find post"}))))
 
 ;; Create ;; POST /posts
 (defn create [title subject]
-  (let [timenow (local-now)
+  (let [timenow (to-long (local-now))
         ;; returns model that last inserted to db
         last-row (post-model/create-post {:title title
                                          :subject subject
@@ -46,8 +50,8 @@
 
 ;;Update ;; PUT /posts/:id
 (defn update [id title subject]
-  (let [show (show id)]
-    (if (check-user (:user_id show))
+  (let [post (post-model/get-post id)]
+    (if (check-user (:user_id post))
       (if (post-model/update-post (read-string id) title subject)
           (edn {:result "ok"})
           (edn {:error "Error while updating post"}))
@@ -55,15 +59,15 @@
 
 ;; DELETE /posts
 (defn delete [id]
-  (let [show (show id)]
-    (if (check-user (:user_id show))
+  (let [post (post-model/get-post id)]
+    (if (check-user (:user_id post))
       (do (post-model/delete-post (read-string id))
           (edn {:result "ok"}))
       (edn {:error "You don't have permissios to delete this post"}))))
 
 
-(defn get-data [id]
-  (edn (show id)))
+;(defn get-data [id]
+;  (edn (show id)))
 
 ;(to-long (from-time-zone (local-now) (time-zone-for-offset 0)))
 ;(def myformatter (formatters :rfc822))

@@ -31,7 +31,8 @@
 (defn get-post [id]
   (first (select posts
                  (fields :id :title :subject :created_at :user_id)
-                 (where {:id id}))))
+                 (where {:id (read-string id)}))))
+(get-post "3")
 
 (defn delete-post [id]
   (delete posts
