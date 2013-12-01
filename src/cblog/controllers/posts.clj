@@ -7,10 +7,9 @@
              [noir.response :refer [edn]])
   (:use
      [clj-time.local :only[local-now]]
-     [clj-time.core :only [from-time-zone time-zone-for-offset default-time-zone ]]
-     [clj-time.coerce :only [to-long]]))
+     [clj-time.coerce :only [to-long from-long]]))
 
-;; GET /
+;; Index ;; GET /
 (defn index []
   (layout/render
    "/posts/index.html"
@@ -19,20 +18,18 @@
         (catch Exception ex
           (timbre/error "unable to find users" ex)
           {:error "unable to find users"}))))
-;(empty? (post-model/get-all-posts))
 
-(defn post-info [id]
-  (post-model/get-post (read-string id)))
 
-(defn check-user [user-id]
-  (= (session/get :user-id) user-id))
+;; Show ;; GET /posts/:id
+(defn show [id]
+  (let [post (post-model/get-post (read-string id))]
+    ))
 
-;; POST /posts
+
+;; Create ;; POST /posts
 (defn create [title subject]
-  (let [timenow (to-long (from-time-zone (local-now) (time-zone-for-offset 0)))
-        ;; models function returns info about last inserted row,
-        ;; needed it to know weather was inserted data or not, and
-        ;; to send id of the last row back to browser
+  (let [timenow (local-now)
+        ;; returns model that last inserted to db
         last-row (post-model/create-post {:title title
                                          :subject subject
                                          :user_id (session/get :user-id)
@@ -41,10 +38,16 @@
       (edn {:result "ok" :id (:id last-row)})
       (edn {:result "error"}))))
 
-;; PUT /posts/:id
+
+
+(defn check-user [user-id]
+  (= (session/get :user-id) user-id))
+
+
+;;Update ;; PUT /posts/:id
 (defn update [id title subject]
-  (let [post-info (post-info id)]
-    (if (check-user (:user_id post-info))
+  (let [show (show id)]
+    (if (check-user (:user_id show))
       (if (post-model/update-post (read-string id) title subject)
           (edn {:result "ok"})
           (edn {:error "Error while updating post"}))
@@ -52,18 +55,15 @@
 
 ;; DELETE /posts
 (defn delete [id]
-  (let [post-info (post-info id)]
-    (if (check-user (:user_id post-info))
+  (let [show (show id)]
+    (if (check-user (:user_id show))
       (do (post-model/delete-post (read-string id))
           (edn {:result "ok"}))
       (edn {:error "You don't have permissios to delete this post"}))))
 
-;; GET/posts/:id
-(defn show [id]
-  (println "show post"))
 
 (defn get-data [id]
-  (edn (post-info id)))
+  (edn (show id)))
 
 ;(to-long (from-time-zone (local-now) (time-zone-for-offset 0)))
 ;(def myformatter (formatters :rfc822))
@@ -72,3 +72,4 @@
 
 
 ;[clj-time.format :only [formatter formatters unparse ]]
+

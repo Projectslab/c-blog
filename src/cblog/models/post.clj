@@ -30,7 +30,7 @@
 
 (defn get-post [id]
   (first (select posts
-                 (fields :id :title :subject :user_id)
+                 (fields :id :title :subject :created_at :user_id)
                  (where {:id id}))))
 
 (defn delete-post [id]
@@ -48,3 +48,4 @@
 
 
 
+
