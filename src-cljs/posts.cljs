@@ -82,8 +82,6 @@
                  ;; event hendler
                  (fn [e]
                    (.preventDefault e)
-                   (js/console.log (.-selectedTarget e))
-                   (js/console.log (dommy/closest (.-selectedTarget e) :div))
                    ;; get id of post stored in data-id attr of parent's div
                    (let [post-div (dommy/closest (.-selectedTarget e) :div)
                          id (dommy/attr post-div :data-id)]
@@ -128,7 +126,6 @@
          (mapv #(dommy/remove! %)))
     (if (= (:result resp))
       (do (let [elem (sel1 :#update)]
-            (js/console.log elem)
             (if-not (nil? elem)
               (dommy/remove! elem)))
           (update-title id title)))))
@@ -142,7 +139,6 @@
                          title (dommy/value (-> form (sel1 :#title)))
                          subject (dommy/value (-> form (sel1 :#subject)))
                          id (dommy/value (-> form (sel1 :#id)))]
-                     (js/console.log form title subject id)
                      (PUT (str "/posts/" id) {:params {:title title
                                                        :subject subject}
                                               :handler (update-handler id title)}))
