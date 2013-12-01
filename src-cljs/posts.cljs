@@ -117,7 +117,12 @@
              id (dommy/attr post-div :data-id)]
          (GET (str "/posts/" id "/data") {:handler get-handler})))))
 
-(defn update-handler [id]
+(defn update-title [id title]
+  (->> (sel [:#posts :div])
+       (mapv #(if (= (dommy/attr % :data-id) id)
+               (dommy/set-text! (-> % (sel1 [:h4 :a])) title)))))
+
+(defn update-handler [id title]
   (fn [resp]
     (->> (sel :.message)
          (mapv #(dommy/remove! %)))
@@ -126,7 +131,7 @@
             (js/console.log elem)
             (if-not (nil? elem)
               (dommy/remove! elem)))
-          (js/console.log (sel1 [:#posts :div {:data-id id}]))))))
+          (update-title id title)))))
 
 (defn update-post []
   (dommy/listen! [(sel1 :#posts) :#update :form] :submit
@@ -140,7 +145,7 @@
                      (js/console.log form title subject id)
                      (PUT (str "/posts/" id) {:params {:title title
                                                        :subject subject}
-                                              :handler (update-handler id)}))
+                                              :handler (update-handler id title)}))
                    false)))
 
 ;; function to export
