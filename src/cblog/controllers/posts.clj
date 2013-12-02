@@ -7,7 +7,8 @@
              [noir.response :refer [edn]])
   (:use
      [clj-time.local :only[local-now]]
-     [clj-time.coerce :only [to-long from-long]]))
+     [clj-time.coerce :only [to-long from-long]]
+     [clj-time.format :only [unparse formatter]]))
 
 ;; Index ;; GET /
 (defn index []
@@ -21,14 +22,23 @@
 
 ;; Show ;; GET /posts/:id
 
+;; Helper function for show
+(defn change-time-format [post]
+  (let [time-format (formatter "yyyy-MM-dd HH:mm:ss")
+       formatted-time (unparse time-format (clj-time.coerce/from-long (:created_at post)))]
+  (assoc-in post [:created_at] formatted-time)))
+
+
 (defn show [id]
   (layout/render
    "/posts/show.html"
+   (let [post (post-model/get-post id)
+        post-with-formatted-time (change-time-format post)]
     (try
-        {:post (post-model/get-post id)}
+        {:post post-with-formatted-time}
         (catch Exception ex
           (timbre/error "unable to find post" ex)
-          {:error "unable to find post"}))))
+          {:error "unable to find post"})))))
 
 ;; Create ;; POST /posts
 (defn create [title subject]
@@ -76,4 +86,6 @@
 
 
 ;[clj-time.format :only [formatter formatters unparse ]]
+
+
 
