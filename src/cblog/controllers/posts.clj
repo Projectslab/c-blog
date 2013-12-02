@@ -10,6 +10,14 @@
      [clj-time.coerce :only [to-long from-long]]
      [clj-time.format :only [unparse formatter]]))
 
+
+;; Helper function for time convertion
+(defn change-time-format [post]
+  (let [time-format (formatter "yyyy-MM-dd HH:mm:ss")
+       formatted-time (unparse time-format (clj-time.coerce/from-long (:created_at post)))]
+  (assoc-in post [:created_at] formatted-time)))
+
+
 ;; Index ;; GET /
 (defn index []
   (layout/render
@@ -22,14 +30,6 @@
           {:error "unable to find posts"})))))
 
 ;; Show ;; GET /posts/:id
-
-;; Helper function for show
-(defn change-time-format [post]
-  (let [time-format (formatter "yyyy-MM-dd HH:mm:ss")
-       formatted-time (unparse time-format (clj-time.coerce/from-long (:created_at post)))]
-  (assoc-in post [:created_at] formatted-time)))
-
-
 (defn show [id]
   (layout/render
    "/posts/show.html"
