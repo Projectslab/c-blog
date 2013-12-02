@@ -14,11 +14,12 @@
 (defn index []
   (layout/render
    "/posts/index.html"
+   (let [posts-with-formatted-time (map #(change-time-format %) (post-model/get-all-posts))]
     (try
-        {:posts (post-model/get-all-posts)}
+        {:posts posts-with-formatted-time}
         (catch Exception ex
           (timbre/error "unable to find posts" ex)
-          {:error "unable to find posts"}))))
+          {:error "unable to find posts"})))))
 
 ;; Show ;; GET /posts/:id
 
