@@ -24,7 +24,7 @@
                   [clj-time "0.6.0"]]
 
    :cljsbuild
-   {:builds [{:source-paths ["src-cljs"]
+   {:builds [{:source-paths ["src-cljs" "src-cljs/cblog"]
               :compiler {:pretty-print false
                    :output-to "resources/public/js/site.js"
                    :optimizations :advanced}}]}
@@ -44,3 +44,4 @@
    :description "Simple collective blog with authorisation"
    :min-lein-version "2.0.0"
    :repl-options {:init-ns cblog.repl})
+
