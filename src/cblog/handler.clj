@@ -4,7 +4,7 @@
             [compojure.route :as route]
             [taoensso.timbre :as timbre]
             [com.postspectacular.rotor :as rotor]
-            [cblog.config.routes :refer [cljs-routes home-routes post-routes user-routes session-routes]]
+            [cblog.config.routes :refer [home-routes post-routes user-routes session-routes]]
             [cblog.config.schema :as schema]
             [clojure.pprint]))
 
@@ -51,7 +51,7 @@
 
 (def app
  (middleware/app-handler
-   [post-routes cljs-routes user-routes session-routes home-routes app-routes ]
+   [post-routes user-routes session-routes home-routes app-routes ]
    :middleware
    []
    :access-rules
@@ -66,4 +66,5 @@
 
 
 
-
+
+
