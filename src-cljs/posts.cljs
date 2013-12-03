@@ -1,19 +1,13 @@
 (ns cblog.posts
   (:require [ajax.core :refer [GET POST PUT ajax-request transform-opts]]
-            [domina :refer [by-id by-class styles set-styles! value insert-after!]]
-            [domina.events :refer [listen! prevent-default stop-propagation]]
-            [domina.css :as css]
-            [dommy.core :as dommy]
-            [dommy.utils :as utils])
+            [dommy.core :refer [insert-after! insert-before! remove! append! toggle! value listen! closest attr set-text!]])
   (:use-macros
     [dommy.macros :only [sel sel1 node deftemplate]]))
 
 ;; calculated once selectors
-(def wrapper
-  (css/sel "#new-post-wrapper"))
+(def wrapper (sel1 :#new-post-wrapper))
 
-(def button
-  (css/sel "#new-post-button"))
+(def button (sel1 :#new-post-button))
 
 (def posts-wrapper (sel1 :#posts))
 
@@ -30,22 +24,23 @@
   (fn [resp]
     (if (= (:result resp) "ok")
       (let [id (:id resp)]
-        (insert-after! button "<div>Пост отправлен</div>")
-        (dommy/append! posts-wrapper (post-in-list title subject id)))
-      (insert-after! (by-id "new-post-button") "<div>Пост Не отправлен</div>"))))
+        (insert-after! (message "Посто отправлен") button)
+        (append! posts-wrapper (post-in-list title subject id))
+        (toggle! wrapper))
+      (insert-after! (message "Пост не отправлен") button))))
 
 (defn error-handler [error]
-  (insert-after! (by-id "new-post-button") "<div>При отправке поста произошла ошибка</div>"))
+  (insert-after! (message "При отправке поста произошла ошибка") button))
 
 ;; send new post
 (defn send-post []
-  (listen! (-> wrapper (css/sel "form")) :submit
+  (listen! (-> wrapper (sel1 :form)) :submit
            (fn [e]
-             (stop-propagation e)
-             (prevent-default e)
-             (let [val (fn [x] (value (-> wrapper (css/sel x))))
-                   title (val "#title")
-                   subject (val "#subject")]
+             (.preventDefault e)
+             (.stopPropagation e)
+             (let [val (fn [x] (value (-> wrapper (sel1 x))))
+                   title (val :#title)
+                   subject (val :#subject)]
                ;; AJAX-call - create new post
                (POST "/posts" {:params {:title   title
                                         :subject subject}
@@ -55,13 +50,8 @@
 
 ;; toggle new post form by clicking button
 (defn toggle-form []
-  (let [new-post wrapper]
-    (dommy/listen! (by-id "new-post-button") :click
-             (fn [e]
-               (set-styles! new-post
-                            {:display (if (= (:display (styles new-post)) "none")
-                                        "block"
-                                        "none")})))))
+  (listen! button :click
+           (fn [e] (toggle! wrapper))))
 
 (deftemplate message [text]
   [:div.message ^:text text])
@@ -69,25 +59,24 @@
 (defn delete-handler [elem]
   (fn [resp]
     (->> (sel :.message )
-         (mapv #(dommy/remove! %)))
+         (mapv #(remove! %)))
     (if (= (:result resp) "ok")
-      (do (dommy/insert-before! (message "Статья успешно удалена") elem)
-          (dommy/remove! elem))
-      (dommy/insert-before! (message (:error resp)) elem))))
-
+      (do (insert-before! (message "Статья успешно удалена") elem)
+          (remove! elem))
+      (insert-before! (message (:error resp)) elem))))
 
 ;; delete post
 (defn delete-post []
-  (dommy/listen! [(sel1 :#posts) :.delete-post] :click
-                 ;; event hendler
-                 (fn [e]
-                   (.preventDefault e)
-                   ;; get id of post stored in data-id attr of parent's div
-                   (let [post-div (dommy/closest (.-selectedTarget e) :div)
-                         id (dommy/attr post-div :data-id)]
-                     (ajax-request "/posts" "DELETE"
-                                   (transform-opts {:params {:id id}
-                                                    :handler (delete-handler post-div)}))))))
+  (listen! [(sel1 :#posts) :.delete-post] :click
+           ;; event hendler
+           (fn [e]
+             (.preventDefault e)
+             ;; get id of post stored in data-id attr of parent's div
+             (let [post-div (closest (.-selectedTarget e) :div)
+                   id (attr post-div :data-id)]
+               (ajax-request "/posts" "DELETE"
+                             (transform-opts {:params {:id id}
+                                              :handler (delete-handler post-div)}))))))
 
 ;; update form template
 (deftemplate update-form [title subject id]
@@ -100,49 +89,48 @@
 
 ;; get info handler
 (defn get-handler [resp]
-  (dommy/append! (sel1 :#posts) (update-form (:title resp) (:subject resp) (:id resp)))
-  )
+  (append! (sel1 :#posts) (update-form (:title resp) (:subject resp) (:id resp))))
 
 ;; edit click listener
 (defn click-edit []
   (let [elem (sel1 :#update)]
     (if-not (nil? elem)
-      (dommy/remove! elem)))
-  (dommy/listen! [(sel1 :#posts) :.edit-post] :click
+      (remove! elem)))
+  (listen! [(sel1 :#posts) :.edit-post] :click
      (fn [e]
        (.preventDefault e)
-       (let [post-div (dommy/closest (.-selectedTarget e) :div)
-             id (dommy/attr post-div :data-id)]
+       (let [post-div (closest (.-selectedTarget e) :div)
+             id (attr post-div :data-id)]
          (GET (str "/posts/" id "/data") {:handler get-handler})))))
 
 (defn update-title [id title]
   (->> (sel [:#posts :div])
-       (mapv #(if (= (dommy/attr % :data-id) id)
-               (dommy/set-text! (-> % (sel1 [:h4 :a])) title)))))
+       (mapv #(if (= (attr % :data-id) id)
+               (set-text! (-> % (sel1 [:h4 :a])) title)))))
 
 (defn update-handler [id title]
   (fn [resp]
     (->> (sel :.message)
-         (mapv #(dommy/remove! %)))
+         (mapv #(remove! %)))
     (if (= (:result resp))
       (do (let [elem (sel1 :#update)]
             (if-not (nil? elem)
-              (dommy/remove! elem)))
+              (remove! elem)))
           (update-title id title)))))
 
 (defn update-post []
-  (dommy/listen! [(sel1 :#posts) :#update :form] :submit
-                 (fn [e]
-                   (.preventDefault e)
-                   (.stopPropagation e)
-                   (let [form (.-selectedTarget e)
-                         title (dommy/value (-> form (sel1 :#title)))
-                         subject (dommy/value (-> form (sel1 :#subject)))
-                         id (dommy/value (-> form (sel1 :#id)))]
-                     (PUT (str "/posts/" id) {:params {:title title
-                                                       :subject subject}
-                                              :handler (update-handler id title)}))
-                   false)))
+  (listen! [(sel1 :#posts) :#update :form] :submit
+           (fn [e]
+             (.preventDefault e)
+             (.stopPropagation e)
+             (let [form (.-selectedTarget e)
+                   title (value (-> form (sel1 :#title)))
+                   subject (value (-> form (sel1 :#subject)))
+                   id (value (-> form (sel1 :#id)))]
+               (PUT (str "/posts/" id) {:params {:title title
+                                                 :subject subject}
+                                        :handler (update-handler id title)}))
+             false)))
 
 ;; function to export
 (defn ^:export init []

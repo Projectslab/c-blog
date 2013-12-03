@@ -6,7 +6,7 @@
              [cblog.views.layout :as layout]
              [noir.response :refer [edn]])
   (:use
-     [clj-time.local :only[local-now]]
+     [clj-time.local :only [local-now]]
      [clj-time.coerce :only [to-long from-long]]
      [clj-time.format :only [unparse formatter]]))
 
@@ -16,7 +16,6 @@
   (let [time-format (formatter "yyyy-MM-dd HH:mm:ss")
        formatted-time (unparse time-format (clj-time.coerce/from-long (:created_at post)))]
   (assoc-in post [:created_at] formatted-time)))
-
 
 ;; Index ;; GET /
 (defn index []
@@ -53,11 +52,8 @@
       (edn {:result "ok" :id (:id last-row)})
       (edn {:result "error"}))))
 
-
-
 (defn check-user [user-id]
   (= (session/get :user-id) user-id))
-
 
 ;;Update ;; PUT /posts/:id
 (defn update [id title subject]
@@ -76,9 +72,9 @@
           (edn {:result "ok"}))
       (edn {:error "You don't have permissios to delete this post"}))))
 
-
-;(defn get-data [id]
-;  (edn (show id)))
+;; GET /posts/:id/data
+(defn get-data [id]
+  (edn (post-model/get-post id)))
 
 ;(to-long (from-time-zone (local-now) (time-zone-for-offset 0)))
 ;(def myformatter (formatters :rfc822))
@@ -87,6 +83,3 @@
 
 
 ;[clj-time.format :only [formatter formatters unparse ]]
-
-
-
