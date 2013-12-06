@@ -76,10 +76,4 @@
 (defn get-data [id]
   (edn (post-model/get-post id)))
 
-;(to-long (from-time-zone (local-now) (time-zone-for-offset 0)))
-;(def myformatter (formatters :rfc822))
-
-;(unparse myformatter timenow)
-
-
-;[clj-time.format :only [formatter formatters unparse ]]
+

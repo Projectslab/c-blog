@@ -33,10 +33,12 @@
         {:email email
          :email-error (vali/on-error :email first)
          :pass-error  (vali/on-error :pass first)}))))
-;(:id (user-model/find-user-by-email "dave@dave.com"))
+
 ;; DELETE "/session"
 (defn destroy []
   (session/clear!)
   (resp/redirect "/"))
+
+
 
 

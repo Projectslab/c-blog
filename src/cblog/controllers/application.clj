@@ -7,12 +7,6 @@
 ;; Find the user or returns nil
 (defn current-user []
   (find-user (session/get :user-id)))
-  ;(try
-  ;   (find-user (session/get :user-id))
-  ;    (catch Exception ex
-  ;      (timbre/error "error" ex)
-  ;      {:error "error"})))
-(find-user nil)
 
 
 
@@ -21,3 +15,5 @@
 
 
 
+
+
